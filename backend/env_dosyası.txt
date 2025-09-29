@@ -1,0 +1,16 @@
+# Database Configuration
+DB_NAME=herberry
+DB_USER=root
+DB_PASSWORD=Boran2002
+DB_HOST=localhost
+DB_PORT=3306
+
+# Django Settings
+SECRET_KEY=django-insecure-p+w$7x@2m9^k#8n!r&f*3z$v@h+9j%k6l!m&p*r+t=w$7x
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1
+
+# API Settings
+API_VERSION=v1
+API_TITLE=E-Commerce API
+API_DESCRIPTION=E-commerce platform API with Django R
