@@ -11,12 +11,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-this-key')
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=True, cast=bool)
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='').split(',')
 
 # Render.com için
 if 'RENDER' in os.environ:
@@ -48,7 +48,7 @@ LOCAL_APPS = [
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = DEBUG  # Sadece DEBUG=True ise tüm originlere izin ver
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -82,7 +82,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ecommerce_project.wsgi.application'
 
-# Database - PostgreSQL (Render.com) veya Local MySQL
+# Database
 if 'DATABASE_URL' in os.environ:
     # Render.com PostgreSQL
     DATABASES = {
@@ -92,14 +92,14 @@ if 'DATABASE_URL' in os.environ:
         )
     }
 else:
-    # Local MySQL
+    # Local MySQL or Lightsail MySQL
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': config('DB_NAME', default='herberry'),
-            'USER': config('DB_USER', default='root'),
-            'PASSWORD': config('DB_PASSWORD', default=''),
-            'HOST': config('DB_HOST', default='localhost'),
+            'NAME': config('DB_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
+            'HOST': config('DB_HOST'),
             'PORT': config('DB_PORT', default='3306'),
             'OPTIONS': {
                 'charset': 'utf8mb4',
@@ -136,11 +136,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
 
-# WhiteNoise konfigürasyonu (Render.com için)
+# Sadece static klasörü varsa ekle
+if os.path.exists(BASE_DIR / 'static'):
+    STATICFILES_DIRS = [BASE_DIR / 'static']
+else:
+    STATICFILES_DIRS = []
+
+# WhiteNoise konfigürasyonu
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files
@@ -223,6 +226,7 @@ LOGGING = {
     },
     'root': {
         'handlers': ['console'],
+        'level': 'INFO',
     },
     'loggers': {
         'django': {
@@ -240,3 +244,12 @@ CACHES = {
         'LOCATION': 'unique-snowflake',
     }
 }
+
+# Security Settings (Production)
+if not DEBUG:
+    SECURE_SSL_REDIRECT = False  # Nginx'de halledeceğiz
+    SESSION_COOKIE_SECURE = False  # HTTPS kurulunca True yapın
+    CSRF_COOKIE_SECURE = False  # HTTPS kurulunca True yapın
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
