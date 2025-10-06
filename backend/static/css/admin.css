@@ -1,0 +1,43 @@
+:root {
+    --primary-color: #10b981;
+    --hover-color: #059669;
+}
+
+#header {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+}
+
+.module h2,
+.module caption,
+.inline-group h2 {
+    background: var(--primary-color) !important;
+}
+
+a:link,
+a:visited {
+    color: var(--primary-color) !important;
+}
+
+.button,
+input[type=submit],
+input[type=button],
+.submit-row input,
+button {
+    background: var(--primary-color) !important;
+    border: none !important;
+}
+
+.button:hover,
+input[type=submit]:hover,
+input[type=button]:hover {
+    background: var(--hover-color) !important;
+}
+
+.selector-chosen h2 {
+    background: var(--primary-color) !important;
+}
+
+div.breadcrumbs {
+    background: #f9fafb !important;
+    border-bottom: 1px solid #e5e7eb !important;
+}

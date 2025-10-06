@@ -1,0 +1,38 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | Herberry Admin{% endblock %}
+
+{% block branding %}
+<div style="display: flex; align-items: center; gap: 12px; padding: 10px 0;">
+    <div style="width: 40px; height: 40px; background: #10b981; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+        <span style="color: white; font-weight: bold; font-size: 20px;">H</span>
+    </div>
+    <h1 style="margin: 0; font-weight: 600; color: #1f2937;">Herberry Admin</h1>
+</div>
+{% endblock %}
+
+{% block nav-global %}
+<div style="padding: 15px 20px; background: #f3f4f6; border-bottom: 1px solid #e5e7eb;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; gap: 20px;">
+            <a href="/admin/" style="color: #374151; text-decoration: none; font-weight: 500;">
+                🏠 Panel
+            </a>
+            <a href="/swagger/" style="color: #374151; text-decoration: none; font-weight: 500;" target="_blank">
+                📊 API Swagger
+            </a>
+            <a href="/redoc/" style="color: #374151; text-decoration: none; font-weight: 500;" target="_blank">
+                📄 API Docs
+            </a>
+        </div>
+        <div style="color: #6b7280; font-size: 14px;">
+            Hoş geldiniz, <strong>{{ user.get_full_name|default:user.username }}</strong>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+{% endblock %}

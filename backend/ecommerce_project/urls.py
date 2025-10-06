@@ -5,7 +5,9 @@ from django.conf.urls.static import static
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
+from accounts.views import custom_login_view
 
+# Swagger - Sadece Admin kullanıcılar erişebilir
 schema_view = get_schema_view(
     openapi.Info(
         title="Herberry API",
@@ -14,16 +16,22 @@ schema_view = get_schema_view(
         contact=openapi.Contact(email="contact@herberry.com"),
         license=openapi.License(name="MIT License"),
     ),
-    public=True,
-    permission_classes=(permissions.AllowAny,),
+    public=False,  # Public değil
+    permission_classes=[permissions.IsAdminUser],  # Sadece admin
 )
 
 urlpatterns = [
+    # Ana sayfa - Özel login sayfası
+    path('', custom_login_view, name='home-login'),
+
     # Django admin
     path('admin/', admin.site.urls),
 
-    # API Documentation
-    path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    # Django authentication URLs
+    path('accounts/', include('django.contrib.auth.urls')),
+
+    # API Documentation - Sadece Admin Erişimi
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
     # API Schema endpoints
