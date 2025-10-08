@@ -10,11 +10,15 @@ class OrderItemInline(admin.TabularInline):
     readonly_fields = ('unit_price_display', 'line_total_display')
 
     def unit_price_display(self, obj):
+        if obj.unit_price_cents is None:
+            return "0.00 TL"
         return f"{obj.unit_price_cents / 100:.2f} TL"
 
     unit_price_display.short_description = "Birim Fiyat"
 
     def line_total_display(self, obj):
+        if obj.line_total_cents is None:
+            return "0.00 TL"
         return f"{obj.line_total_cents / 100:.2f} TL"
 
     line_total_display.short_description = "Satır Toplamı"
@@ -32,8 +36,7 @@ class OrderAdmin(admin.ModelAdmin):
             'fields': ('user', 'address', 'status', 'payment_provider', 'payment_ref')
         }),
         ('Fiyat Bilgileri', {
-            'fields': ('subtotal_cents', 'shipping_cents', 'discount_cents', 'vat_cents', 'total_cents', 'currency',
-                       'total_display')
+            'fields': ('subtotal_cents', 'shipping_cents', 'discount_cents', 'vat_cents', 'total_cents', 'currency', 'total_display')
         }),
         ('Tarihler', {
             'fields': ('created_at', 'updated_at'),
@@ -50,6 +53,8 @@ class OrderAdmin(admin.ModelAdmin):
     user_email.admin_order_field = 'user__email'
 
     def total_display(self, obj):
+        if obj.total_cents is None:
+            return "0.00 TL"
         return f"{obj.total_cents / 100:.2f} TL"
 
     total_display.short_description = "Toplam"
@@ -79,11 +84,15 @@ class OrderItemAdmin(admin.ModelAdmin):
     search_fields = ('name_snapshot', 'order__id', 'order__user__email')
 
     def unit_price_display(self, obj):
+        if obj.unit_price_cents is None:
+            return "0.00 TL"
         return f"{obj.unit_price_cents / 100:.2f} TL"
 
     unit_price_display.short_description = "Birim Fiyat"
 
     def line_total_display(self, obj):
+        if obj.line_total_cents is None:
+            return "0.00 TL"
         return f"{obj.line_total_cents / 100:.2f} TL"
 
     line_total_display.short_description = "Satır Toplamı"
