@@ -21,7 +21,7 @@ class OrderItemInline(admin.TabularInline):
             return "0.00 TL"
         return f"{obj.line_total_cents / 100:.2f} TL"
 
-    line_total_display.short_description = "Satır Toplamı"
+    line_total_display.short_description = "Satir Toplami"
 
 
 @admin.register(Order)
@@ -32,7 +32,7 @@ class OrderAdmin(admin.ModelAdmin):
     readonly_fields = ('total_display', 'created_at', 'updated_at')
 
     fieldsets = (
-        ('Sipariş Bilgileri', {
+        ('Siparis Bilgileri', {
             'fields': ('user', 'address', 'status', 'payment_provider', 'payment_ref')
         }),
         ('Fiyat Bilgileri', {
@@ -49,7 +49,7 @@ class OrderAdmin(admin.ModelAdmin):
     def user_email(self, obj):
         return obj.user.email
 
-    user_email.short_description = "Kullanıcı"
+    user_email.short_description = "Kullanici"
     user_email.admin_order_field = 'user__email'
 
     def total_display(self, obj):
@@ -69,7 +69,7 @@ class OrderAdmin(admin.ModelAdmin):
         }
         color = colors.get(obj.status, 'gray')
         return format_html(
-            '<span style="background-color: {}; color: white; padding: 3px 8px; border-radius: 3px; font-size: 11px;">{}</span>',
+            '<span style="background-color: {}; color: white; padding: 3px 8px; border-radius: 3px;">{}</span>',
             color,
             obj.get_status_display()
         )
@@ -95,4 +95,4 @@ class OrderItemAdmin(admin.ModelAdmin):
             return "0.00 TL"
         return f"{obj.line_total_cents / 100:.2f} TL"
 
-    line_total_display.short_description = "Satır Toplamı"
+    line_total_display.short_description = "Satir Toplami"
