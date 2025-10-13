@@ -172,3 +172,25 @@ input[type="button"]:hover,
 #content span {
     color: #111827 !important;
 }
+
+.module a.addlink,
+.module a.addlink:link,
+.module a.addlink:visited,
+.module a.addlink:hover,
+.module a.addlink:focus,
+.module a.changelink,
+.module a.changelink:link,
+.module a.changelink:visited,
+.module a.changelink:hover,
+.module a.changelink:focus {
+    color: #ffffff !important;
+    background-color: #10b981 !important;
+    border: none !important;
+}
+
+/* Hover durumunda biraz koyulaşsın */
+.module a.addlink:hover,
+.module a.changelink:hover {
+    background-color: #059669 !important;
+    color: #ffffff !important;
+}
