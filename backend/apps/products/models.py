@@ -220,8 +220,8 @@ class Cart(models.Model):
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items', verbose_name="Sepet")
     sku = models.ForeignKey(SKU, on_delete=models.CASCADE, verbose_name="SKU")
-    qty = models.PositiveIntegerField(verbose_name="Miktar")
-    unit_price_cents = models.PositiveIntegerField(verbose_name="Birim Fiyat (Kuruş)")
+    qty = models.PositiveIntegerField(default=1, verbose_name="Miktar")  # default=1 eklendi
+    unit_price_cents = models.PositiveIntegerField(default=0, verbose_name="Birim Fiyat (Kuruş)")  # default=0 eklendi
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Oluşturma Tarihi")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Güncellenme Tarihi")
 
@@ -241,7 +241,10 @@ class CartItem(models.Model):
     @property
     def total_price_cents(self):
         """Toplam fiyat (kuruş)"""
-        return self.qty * self.unit_price_cents
+        # None kontrolü ekle
+        qty = self.qty or 0
+        unit_price = self.unit_price_cents or 0
+        return qty * unit_price
 
     @property
     def total_price_tl(self):
@@ -251,10 +254,14 @@ class CartItem(models.Model):
     @property
     def unit_price_tl(self):
         """Birim fiyat (TL)"""
-        return self.unit_price_cents / 100
+        unit_price = self.unit_price_cents or 0
+        return unit_price / 100
 
     def save(self, *args, **kwargs):
         # Eğer unit_price_cents belirtilmemişse, SKU'dan al
-        if not self.unit_price_cents:
+        if not self.unit_price_cents and self.sku_id:
             self.unit_price_cents = self.sku.price_cents
+        # qty None ise 1 yap
+        if not self.qty:
+            self.qty = 1
         super().save(*args, **kwargs)
