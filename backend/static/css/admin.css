@@ -1,57 +1,35 @@
 :root {
     --primary-color: #10b981;
     --primary-dark: #059669;
-    --primary-light: #34d399;
     --text-dark: #111827;
     --text-medium: #374151;
     --text-light: #6b7280;
     --bg-light: #f9fafb;
-    --bg-lighter: #f3f4f6;
     --border-color: #e5e7eb;
 }
 
-/* Header - Yeşil gradient arka plan, BEYAZ yazılar */
+/* Header - BEYAZ YAZILAR */
 #header {
     background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 #header a:link,
-#header a:visited {
-    color: white !important;
-}
-
-#header a:hover {
-    color: rgba(255, 255, 255, 0.9) !important;
-}
-
-/* Branding bölümü - Logo ve yazılar */
+#header a:visited,
 #branding h1,
 #branding h1 a:link,
-#branding h1 a:visited {
-    color: white !important;
-}
-
-/* User tools - Sağ üst köşe */
-#user-tools {
-    color: white !important;
-}
-
+#branding h1 a:visited,
+#user-tools,
 #user-tools a:link,
 #user-tools a:visited {
     color: white !important;
 }
 
-/* Breadcrumbs - Koyu yazı, açık arkaplan */
+/* Breadcrumbs */
 div.breadcrumbs {
     background: var(--bg-light) !important;
     border-bottom: 1px solid var(--border-color) !important;
     padding: 12px 20px !important;
-}
-
-div.breadcrumbs a {
-    color: var(--primary-color) !important;
-    font-weight: 500;
 }
 
 div.breadcrumbs,
@@ -59,7 +37,11 @@ div.breadcrumbs a {
     color: var(--text-dark) !important;
 }
 
-/* Module başlıkları - Yeşil arkaplan, BEYAZ yazı */
+div.breadcrumbs a:hover {
+    color: var(--primary-color) !important;
+}
+
+/* Module başlıkları - BEYAZ YAZILAR */
 .module h2,
 .module caption,
 .inline-group h2 {
@@ -70,7 +52,6 @@ div.breadcrumbs a {
     border-radius: 8px 8px 0 0 !important;
 }
 
-/* Module container */
 .module {
     border: 1px solid var(--border-color);
     border-radius: 8px;
@@ -78,7 +59,7 @@ div.breadcrumbs a {
     margin-bottom: 20px;
 }
 
-/* Linkler - Yeşil renk */
+/* Linkler */
 a:link,
 a:visited {
     color: var(--primary-color) !important;
@@ -87,17 +68,20 @@ a:visited {
 
 a:hover {
     color: var(--primary-dark) !important;
-    text-decoration: underline;
 }
 
-/* Butonlar - Yeşil arkaplan, BEYAZ yazı */
+/* BUTONLAR - EN ÖNEMLİSİ - BEYAZ YAZILAR! */
 .button,
 input[type=submit],
 input[type=button],
 .submit-row input,
 button,
 .addlink,
-.changelink {
+.changelink,
+.addlink:link,
+.addlink:visited,
+.changelink:link,
+.changelink:visited {
     background: var(--primary-color) !important;
     color: white !important;
     border: none !important;
@@ -106,6 +90,7 @@ button,
     font-weight: 500 !important;
     transition: all 0.2s ease !important;
     cursor: pointer;
+    text-decoration: none !important;
 }
 
 .button:hover,
@@ -114,14 +99,17 @@ input[type=button]:hover,
 .addlink:hover,
 .changelink:hover {
     background: var(--primary-dark) !important;
+    color: white !important;
     transform: translateY(-1px);
     box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
-    color: white !important;
+    text-decoration: none !important;
 }
 
-/* Delete button - Kırmızı arkaplan, BEYAZ yazı */
+/* Delete button */
 .deletelink,
-.deletelink-box a.deletelink {
+.deletelink-box a.deletelink,
+.deletelink:link,
+.deletelink:visited {
     background: #ef4444 !important;
     color: white !important;
 }
@@ -138,7 +126,7 @@ input[type=submit].default {
     color: white !important;
 }
 
-/* Tablolar - Koyu yazılar */
+/* Tablolar */
 #result_list,
 .results {
     border: 1px solid var(--border-color);
@@ -193,14 +181,14 @@ input[type=submit].default {
     outline: none !important;
 }
 
-/* Form labels - Koyu yazı */
+/* Form labels */
 .form-row label,
 .aligned label {
     font-weight: 600;
     color: var(--text-dark) !important;
 }
 
-/* Selector - Yeşil arkaplan başlık, BEYAZ yazı */
+/* Selector */
 .selector {
     border: 1px solid var(--border-color);
     border-radius: 8px;
@@ -213,21 +201,7 @@ input[type=submit].default {
     color: white !important;
 }
 
-.selector .selector-filter {
-    background: var(--bg-light);
-    border-bottom: 1px solid var(--border-color);
-    padding: 8px;
-}
-
 /* Dashboard */
-#content-main {
-    padding: 20px;
-}
-
-.dashboard .module table {
-    width: 100%;
-}
-
 .dashboard .module th {
     background: var(--bg-light);
     font-weight: 600;
@@ -235,7 +209,7 @@ input[type=submit].default {
     color: var(--text-dark) !important;
 }
 
-/* Mesajlar - Renkli arkaplan, KOYU yazı */
+/* Mesajlar */
 .messagelist {
     border-radius: 8px;
     overflow: hidden;
@@ -295,21 +269,6 @@ input[type=submit].default {
     font-weight: 600;
 }
 
-/* Fieldsets */
-fieldset.module {
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-/* Help text */
-.help,
-p.help {
-    color: var(--text-light) !important;
-    font-size: 13px;
-}
-
 /* Submit row */
 .submit-row {
     padding: 15px 20px;
@@ -318,7 +277,7 @@ p.help {
     border-radius: 0 0 8px 8px;
 }
 
-/* Object tools - Yeşil arkaplan, BEYAZ yazı */
+/* Object tools - BEYAZ YAZILAR */
 .object-tools {
     margin: 0 0 20px;
 }
@@ -333,13 +292,15 @@ p.help {
     color: white !important;
     padding: 10px 16px;
     font-weight: 500;
+    text-decoration: none !important;
 }
 
 .object-tools a:hover {
     color: white !important;
+    text-decoration: none !important;
 }
 
-/* Content area - Tüm yazılar koyu renk */
+/* Content area - KOYU YAZILAR */
 #content {
     color: var(--text-dark) !important;
 }
@@ -348,8 +309,16 @@ p.help {
 #content div,
 #content span,
 #content td,
-#content th {
+#content th,
+#content label {
     color: var(--text-dark) !important;
+}
+
+/* Help text */
+.help,
+p.help {
+    color: var(--text-light) !important;
+    font-size: 13px;
 }
 
 /* Responsive */
