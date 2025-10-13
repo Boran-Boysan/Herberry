@@ -245,6 +245,14 @@ CACHES = {
     }
 }
 
+# Admin Site Özelleştirmeleri
+ADMIN_SITE_HEADER = "Herberry Yönetim Paneli"
+ADMIN_SITE_TITLE = "Herberry Admin"
+ADMIN_INDEX_TITLE = "Yönetim Paneli"
+LOGIN_URL = '/admin/login/'
+LOGIN_REDIRECT_URL = '/admin/'
+LOGOUT_REDIRECT_URL = '/'
+
 # Security Settings (Production)
 if not DEBUG:
     # HTTPS yönlendirmesini Nginx'de yapıyoruz

@@ -1,43 +1,320 @@
+/* Herberry Admin Panel Custom CSS */
+
 :root {
     --primary-color: #10b981;
-    --hover-color: #059669;
+    --primary-dark: #059669;
+    --primary-light: #34d399;
+    --text-dark: #111827;
+    --text-medium: #374151;
+    --text-light: #6b7280;
+    --bg-light: #f9fafb;
+    --bg-lighter: #f3f4f6;
+    --border-color: #e5e7eb;
 }
 
+/* Header */
 #header {
     background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
+#header a:link,
+#header a:visited {
+    color: white !important;
+}
+
+/* Breadcrumbs */
+div.breadcrumbs {
+    background: var(--bg-light) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    padding: 12px 20px !important;
+}
+
+div.breadcrumbs a {
+    color: var(--primary-color) !important;
+    font-weight: 500;
+}
+
+/* Module başlıkları */
 .module h2,
 .module caption,
 .inline-group h2 {
-    background: var(--primary-color) !important;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
+    color: white !important;
+    padding: 12px 16px !important;
+    font-weight: 600 !important;
+    border-radius: 8px 8px 0 0 !important;
 }
 
+/* Module container */
+.module {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+/* Linkler */
 a:link,
 a:visited {
     color: var(--primary-color) !important;
+    text-decoration: none;
 }
 
+a:hover {
+    color: var(--primary-dark) !important;
+    text-decoration: underline;
+}
+
+/* Butonlar */
 .button,
 input[type=submit],
 input[type=button],
 .submit-row input,
-button {
+button,
+.addlink,
+.changelink {
     background: var(--primary-color) !important;
+    color: white !important;
     border: none !important;
+    border-radius: 8px !important;
+    padding: 10px 20px !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer;
 }
 
 .button:hover,
 input[type=submit]:hover,
-input[type=button]:hover {
-    background: var(--hover-color) !important;
+input[type=button]:hover,
+.addlink:hover,
+.changelink:hover {
+    background: var(--primary-dark) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
 }
 
-.selector-chosen h2 {
+/* Delete button */
+.deletelink,
+.deletelink-box a.deletelink {
+    background: #ef4444 !important;
+}
+
+.deletelink:hover {
+    background: #dc2626 !important;
+}
+
+/* Default button */
+.default,
+input[type=submit].default {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
+}
+
+/* Tablolar */
+#result_list,
+.results {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#result_list thead th {
+    background: var(--bg-light) !important;
+    color: var(--text-dark) !important;
+    font-weight: 600 !important;
+    border-bottom: 2px solid var(--border-color) !important;
+    padding: 12px !important;
+}
+
+#result_list tbody tr {
+    border-bottom: 1px solid #f3f4f6;
+}
+
+#result_list tbody tr:hover {
+    background: var(--bg-light) !important;
+}
+
+#result_list tbody th,
+#result_list tbody td {
+    padding: 12px !important;
+}
+
+/* Form alanları */
+.form-row input[type="text"],
+.form-row input[type="password"],
+.form-row input[type="email"],
+.form-row input[type="url"],
+.form-row input[type="number"],
+.form-row input[type="date"],
+.form-row input[type="datetime-local"],
+.form-row textarea,
+.form-row select {
+    border: 2px solid var(--border-color) !important;
+    border-radius: 6px !important;
+    padding: 10px 12px !important;
+    transition: all 0.2s ease;
+}
+
+.form-row input:focus,
+.form-row textarea:focus,
+.form-row select:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+    outline: none !important;
+}
+
+/* Selector (filter_horizontal, filter_vertical) */
+.selector {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.selector-chosen h2,
+.selector-available h2 {
     background: var(--primary-color) !important;
+    color: white !important;
 }
 
-div.breadcrumbs {
-    background: #f9fafb !important;
-    border-bottom: 1px solid #e5e7eb !important;
+.selector .selector-filter {
+    background: var(--bg-light);
+    border-bottom: 1px solid var(--border-color);
+    padding: 8px;
+}
+
+/* Dashboard */
+#content-main {
+    padding: 20px;
+}
+
+.dashboard .module table {
+    width: 100%;
+}
+
+.dashboard .module th {
+    background: var(--bg-light);
+    font-weight: 600;
+    padding: 10px;
+}
+
+/* Mesajlar */
+.messagelist {
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0 0 20px;
+}
+
+.messagelist li {
+    padding: 12px 16px;
+    font-weight: 500;
+}
+
+.messagelist .success {
+    background: #d1fae5 !important;
+    color: #065f46;
+    border-left: 4px solid var(--primary-color);
+}
+
+.messagelist .warning {
+    background: #fef3c7 !important;
+    color: #92400e;
+    border-left: 4px solid #f59e0b;
+}
+
+.messagelist .error {
+    background: #fee2e2 !important;
+    color: #991b1b;
+    border-left: 4px solid #ef4444;
+}
+
+/* Pagination */
+.paginator {
+    padding: 15px 0;
+    text-align: center;
+}
+
+.paginator a:link,
+.paginator a:visited {
+    background: white;
+    border: 1px solid var(--border-color);
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin: 0 2px;
+}
+
+.paginator a:hover {
+    background: var(--bg-light);
+    text-decoration: none;
+}
+
+.paginator .this-page {
+    background: var(--primary-color);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+/* Fieldsets */
+.aligned label {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+fieldset.module {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+/* Help text */
+.help,
+p.help {
+    color: var(--text-light);
+    font-size: 13px;
+}
+
+/* Submit row */
+.submit-row {
+    padding: 15px 20px;
+    background: var(--bg-light);
+    border-top: 1px solid var(--border-color);
+    border-radius: 0 0 8px 8px;
+}
+
+/* Object tools */
+.object-tools {
+    margin: 0 0 20px;
+}
+
+.object-tools li {
+    background: var(--primary-color);
+    border-radius: 8px;
+}
+
+.object-tools a:link,
+.object-tools a:visited {
+    color: white !important;
+    padding: 10px 16px;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .colM {
+        margin-left: 0 !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .submit-row {
+        padding: 12px 15px;
+    }
+
+    .object-tools {
+        float: none;
+        margin-left: 0;
+        margin-bottom: 15px;
+    }
 }

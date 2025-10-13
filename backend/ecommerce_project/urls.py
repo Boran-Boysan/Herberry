@@ -2,12 +2,17 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
-from accounts.views import custom_login_view
 
-# Swagger - Sadece Admin kullanıcılar erişebilir
+# Admin site özelleştirmesi
+admin.site.site_header = "🍓 Herberry Yönetim Paneli"
+admin.site.site_title = "Herberry Admin"
+admin.site.index_title = "Yönetim Paneli"
+admin.site.site_url = "/"  # Admin'den ana sayfaya dön
+
 schema_view = get_schema_view(
     openapi.Info(
         title="Herberry API",
@@ -16,21 +21,18 @@ schema_view = get_schema_view(
         contact=openapi.Contact(email="contact@herberry.com"),
         license=openapi.License(name="MIT License"),
     ),
-    public=False,  # Public değil
-    permission_classes=[permissions.IsAdminUser],  # Sadece admin
+    public=True,
+    permission_classes=(permissions.AllowAny,),
 )
 
 urlpatterns = [
-    # Ana sayfa - Özel login sayfası
-    path('', custom_login_view, name='home-login'),
+    # Landing Page (Ana Sayfa)
+    path('', TemplateView.as_view(template_name='landing.html'), name='landing'),
 
     # Django admin
     path('admin/', admin.site.urls),
 
-    # Django authentication URLs
-    path('accounts/', include('django.contrib.auth.urls')),
-
-    # API Documentation - Sadece Admin Erişimi
+    # API Documentation
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 

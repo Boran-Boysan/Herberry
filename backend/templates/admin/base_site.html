@@ -4,35 +4,67 @@
 {% block title %}{{ title }} | Herberry Admin{% endblock %}
 
 {% block branding %}
-<div style="display: flex; align-items: center; gap: 12px; padding: 10px 0;">
-    <div style="width: 40px; height: 40px; background: #10b981; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+<div style="display: flex; align-items: center; gap: 12px; padding: 10px 20px;">
+    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                border-radius: 10px; display: flex; align-items: center; justify-content: center;">
         <span style="color: white; font-weight: bold; font-size: 20px;">H</span>
     </div>
-    <h1 style="margin: 0; font-weight: 600; color: #1f2937;">Herberry Admin</h1>
+    <div>
+        <h1 style="margin: 0; font-weight: 600; color: white; font-size: 18px;">Herberry</h1>
+        <p style="margin: 0; font-size: 12px; color: rgba(255, 255, 255, 0.9);">Yönetim Paneli</p>
+    </div>
 </div>
 {% endblock %}
 
-{% block nav-global %}
-<div style="padding: 15px 20px; background: #f3f4f6; border-bottom: 1px solid #e5e7eb;">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-        <div style="display: flex; gap: 20px;">
-            <a href="/admin/" style="color: #374151; text-decoration: none; font-weight: 500;">
-                🏠 Panel
-            </a>
-            <a href="/swagger/" style="color: #374151; text-decoration: none; font-weight: 500;" target="_blank">
-                📊 API Swagger
-            </a>
-            <a href="/redoc/" style="color: #374151; text-decoration: none; font-weight: 500;" target="_blank">
-                📄 API Docs
-            </a>
-        </div>
-        <div style="color: #6b7280; font-size: 14px;">
-            Hoş geldiniz, <strong>{{ user.get_full_name|default:user.username }}</strong>
-        </div>
-    </div>
+{% block nav-global %}{% endblock %}
+
+{% block userlinks %}
+<div style="display: flex; align-items: center; gap: 15px; padding-right: 20px;">
+    {% if user.is_authenticated %}
+    <a href="/" style="color: white; text-decoration: none; font-size: 13px; opacity: 0.9;" target="_blank">
+        📊 API Swagger
+    </a>
+    <a href="/redoc/" style="color: white; text-decoration: none; font-size: 13px; opacity: 0.9;" target="_blank">
+        📄 API Docs
+    </a>
+    <span style="color: white; font-size: 14px; opacity: 0.9;">
+        Hoş geldiniz, <strong>{{ user.get_full_name|default:user.email }}</strong>
+    </span>
+    <a href="{% url 'admin:logout' %}"
+       style="background: rgba(255, 255, 255, 0.2); color: white; padding: 6px 16px;
+              border-radius: 6px; text-decoration: none; font-size: 13px;
+              font-weight: 500; transition: all 0.2s; border: 1px solid rgba(255, 255, 255, 0.3);">
+        Çıkış Yap
+    </a>
+    {% endif %}
 </div>
 {% endblock %}
 
 {% block extrastyle %}
 <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+<style>
+    /* Responsive düzenleme */
+    @media (max-width: 768px) {
+        #header {
+            padding: 10px !important;
+        }
+
+        #branding {
+            float: none !important;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        #user-tools {
+            float: none !important;
+            text-align: center;
+            padding: 10px 0 !important;
+        }
+
+        #user-tools > div {
+            flex-direction: column;
+            gap: 10px !important;
+        }
+    }
+</style>
 {% endblock %}
