@@ -1,196 +1,182 @@
-/* Herberry Admin Panel Custom CSS */
+/* ======================================
+   HERBERRY DJANGO ADMIN CUSTOM THEME
+   ====================================== */
 
-/* Header - Yeşil arkaplan, BEYAZ yazılar */
+/* === HEADER === */
 #header {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+}
+#branding h1, #branding h1 a {
+  color: #ffffff !important;
+}
+#user-tools a {
+  color: #ffffff !important;
 }
 
-#branding h1,
-#branding h1 a:link,
-#branding h1 a:visited {
-    color: #ffffff !important;
-}
-
-#user-tools a:link,
-#user-tools a:visited {
-    color: #ffffff !important;
-}
-
-/* Breadcrumbs */
+/* === BREADCRUMBS === */
 .breadcrumbs {
-    background: #f9fafb !important;
-    color: #111827 !important;
+  background: #f9fafb !important;
+  color: #111827 !important;
 }
-
 .breadcrumbs a {
-    color: #10b981 !important;
+  color: #10b981 !important;
 }
 
-/* Module başlıkları - Yeşil arkaplan, BEYAZ yazı */
+/* === MODULE BAŞLIKLARI === */
 .module h2,
-.module caption,
-.inline-group h2 {
-    background: #10b981 !important;
-    color: #ffffff !important;
+.module caption {
+  background: #10b981 !important;
+  color: #ffffff !important;
+}
+.module h2 a,
+.module caption a {
+  color: #ffffff !important;
+  text-decoration: none !important;
 }
 
-/* Linkler */
+/* === LİNKLER === */
 a:link,
 a:visited {
-    color: #10b981 !important;
+  color: #10b981 !important;
 }
-
 a:hover {
-    color: #059669 !important;
+  color: #059669 !important;
 }
 
-/* BUTONLAR - EN ÖNEMLİSİ - BEYAZ YAZILI */
+/* === BUTONLAR === */
 .button,
 input[type="submit"],
 input[type="button"],
 .submit-row input,
-button,
-.addlink,
-.changelink,
-a.addlink,
-a.changelink,
-.addlink:link,
-.addlink:visited,
-.changelink:link,
-.changelink:visited {
-    background-color: #10b981 !important;
-    color: #ffffff !important;
-    border: none !important;
-    padding: 10px 15px !important;
-    text-decoration: none !important;
-    border-radius: 4px !important;
+button {
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+  border: none !important;
+  padding: 10px 15px !important;
+  border-radius: 4px !important;
+  text-decoration: none !important;
 }
-
 .button:hover,
 input[type="submit"]:hover,
-input[type="button"]:hover,
-.addlink:hover,
-.changelink:hover {
-    background-color: #059669 !important;
-    color: #ffffff !important;
+input[type="button"]:hover {
+  background-color: #059669 !important;
+  color: #ffffff !important;
 }
 
-.button:active,
-.button:focus,
-.addlink:active,
-.addlink:focus,
-.changelink:active,
-.changelink:focus {
-    background-color: #059669 !important;
-    color: #ffffff !important;
-}
-
-/* Delete button - Kırmızı, BEYAZ yazı */
+/* === DELETE BUTTON === */
 .deletelink,
 .deletelink:link,
 .deletelink:visited,
 .deletelink-box a {
-    background-color: #ef4444 !important;
-    color: #ffffff !important;
+  background-color: #ef4444 !important;
+  color: #ffffff !important;
 }
-
 .deletelink:hover,
 .deletelink-box a:hover {
-    background-color: #dc2626 !important;
-    color: #ffffff !important;
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
 }
 
-/* Object tools - BEYAZ yazı */
-.object-tools a:link,
-.object-tools a:visited {
-    background-color: #10b981 !important;
-    color: #ffffff !important;
+/* === OBJECT TOOLS === */
+.object-tools a {
+  background-color: #10b981 !important;
+  color: #ffffff !important;
 }
-
 .object-tools a:hover {
-    background-color: #059669 !important;
-    color: #ffffff !important;
+  background-color: #059669 !important;
 }
 
-/* Tablolar - KOYU yazılar */
+/* === TABLOLAR === */
 #result_list thead th {
-    background: #f9fafb !important;
-    color: #111827 !important;
+  background: #f9fafb !important;
+  color: #111827 !important;
 }
-
 #result_list tbody td,
 #result_list tbody th {
-    color: #111827 !important;
+  color: #111827 !important;
 }
 
-/* Form alanları - KOYU yazılar */
+/* === FORM ALANLARI === */
 .form-row label {
-    color: #111827 !important;
+  color: #111827 !important;
 }
-
 .form-row input,
 .form-row textarea,
 .form-row select {
-    color: #111827 !important;
+  color: #111827 !important;
 }
 
-/* Pagination */
-.paginator a:link,
-.paginator a:visited {
-    color: #111827 !important;
+/* === PAGINATION === */
+.paginator a {
+  color: #111827 !important;
 }
-
 .paginator .this-page {
-    background: #10b981 !important;
-    color: #ffffff !important;
+  background: #10b981 !important;
+  color: #ffffff !important;
 }
 
-/* Submit row */
+/* === SUBMIT ROW === */
 .submit-row {
-    background: #f9fafb !important;
+  background: #f9fafb !important;
 }
 
-/* Mesajlar */
+/* === MESAJLAR === */
 .messagelist .success {
-    background-color: #d1fae5 !important;
-    color: #065f46 !important;
+  background-color: #d1fae5 !important;
+  color: #065f46 !important;
 }
-
 .messagelist .warning {
-    background-color: #fef3c7 !important;
-    color: #92400e !important;
+  background-color: #fef3c7 !important;
+  color: #92400e !important;
 }
-
 .messagelist .error {
-    background-color: #fee2e2 !important;
-    color: #991b1b !important;
+  background-color: #fee2e2 !important;
+  color: #991b1b !important;
 }
 
-/* Content area - KOYU yazılar */
+/* === CONTENT === */
 #content p,
 #content div,
 #content span {
-    color: #111827 !important;
+  color: #111827 !important;
 }
 
+/* ======================================
+   ÖZEL EKLE / DEĞİŞTİR DÜZENLEMELERİ
+   ====================================== */
+
+/* Modül başlıklarını beyaz yap */
+.module h2,
+.module caption {
+  color: #ffffff !important;
+}
+
+/* Ekle ve Değiştir buton yazılarını beyaz yap */
 .module a.addlink,
-.module a.addlink:link,
-.module a.addlink:visited,
-.module a.addlink:hover,
-.module a.addlink:focus,
-.module a.changelink,
-.module a.changelink:link,
-.module a.changelink:visited,
-.module a.changelink:hover,
-.module a.changelink:focus {
-    color: #ffffff !important;
-    background-color: #10b981 !important;
-    border: none !important;
+.module a.changelink {
+  color: #ffffff !important;
+  background-color: #10b981 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 88px !important;
+  height: 34px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  text-indent: 0 !important;
+  border: none !important;
+  text-decoration: none !important;
 }
 
-/* Hover durumunda biraz koyulaşsın */
+/* İkonları kaldır (bazı admin temalarında yazıyı gizliyor) */
+.module a.addlink::before,
+.module a.changelink::before {
+  content: none !important;
+}
+
+/* Hover rengi */
 .module a.addlink:hover,
 .module a.changelink:hover {
-    background-color: #059669 !important;
-    color: #ffffff !important;
+  background-color: #059669 !important;
+  color: #ffffff !important;
 }
