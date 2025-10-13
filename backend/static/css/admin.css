@@ -1,5 +1,3 @@
-/* Herberry Admin Panel Custom CSS */
-
 :root {
     --primary-color: #10b981;
     --primary-dark: #059669;
@@ -12,7 +10,7 @@
     --border-color: #e5e7eb;
 }
 
-/* Header */
+/* Header - Yeşil gradient arka plan, BEYAZ yazılar */
 #header {
     background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
@@ -23,7 +21,28 @@
     color: white !important;
 }
 
-/* Breadcrumbs */
+#header a:hover {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Branding bölümü - Logo ve yazılar */
+#branding h1,
+#branding h1 a:link,
+#branding h1 a:visited {
+    color: white !important;
+}
+
+/* User tools - Sağ üst köşe */
+#user-tools {
+    color: white !important;
+}
+
+#user-tools a:link,
+#user-tools a:visited {
+    color: white !important;
+}
+
+/* Breadcrumbs - Koyu yazı, açık arkaplan */
 div.breadcrumbs {
     background: var(--bg-light) !important;
     border-bottom: 1px solid var(--border-color) !important;
@@ -35,7 +54,12 @@ div.breadcrumbs a {
     font-weight: 500;
 }
 
-/* Module başlıkları */
+div.breadcrumbs,
+div.breadcrumbs a {
+    color: var(--text-dark) !important;
+}
+
+/* Module başlıkları - Yeşil arkaplan, BEYAZ yazı */
 .module h2,
 .module caption,
 .inline-group h2 {
@@ -54,7 +78,7 @@ div.breadcrumbs a {
     margin-bottom: 20px;
 }
 
-/* Linkler */
+/* Linkler - Yeşil renk */
 a:link,
 a:visited {
     color: var(--primary-color) !important;
@@ -66,7 +90,7 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Butonlar */
+/* Butonlar - Yeşil arkaplan, BEYAZ yazı */
 .button,
 input[type=submit],
 input[type=button],
@@ -92,25 +116,29 @@ input[type=button]:hover,
     background: var(--primary-dark) !important;
     transform: translateY(-1px);
     box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
+    color: white !important;
 }
 
-/* Delete button */
+/* Delete button - Kırmızı arkaplan, BEYAZ yazı */
 .deletelink,
 .deletelink-box a.deletelink {
     background: #ef4444 !important;
+    color: white !important;
 }
 
 .deletelink:hover {
     background: #dc2626 !important;
+    color: white !important;
 }
 
 /* Default button */
 .default,
 input[type=submit].default {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
+    color: white !important;
 }
 
-/* Tablolar */
+/* Tablolar - Koyu yazılar */
 #result_list,
 .results {
     border: 1px solid var(--border-color);
@@ -137,6 +165,7 @@ input[type=submit].default {
 #result_list tbody th,
 #result_list tbody td {
     padding: 12px !important;
+    color: var(--text-dark) !important;
 }
 
 /* Form alanları */
@@ -153,6 +182,7 @@ input[type=submit].default {
     border-radius: 6px !important;
     padding: 10px 12px !important;
     transition: all 0.2s ease;
+    color: var(--text-dark) !important;
 }
 
 .form-row input:focus,
@@ -163,7 +193,14 @@ input[type=submit].default {
     outline: none !important;
 }
 
-/* Selector (filter_horizontal, filter_vertical) */
+/* Form labels - Koyu yazı */
+.form-row label,
+.aligned label {
+    font-weight: 600;
+    color: var(--text-dark) !important;
+}
+
+/* Selector - Yeşil arkaplan başlık, BEYAZ yazı */
 .selector {
     border: 1px solid var(--border-color);
     border-radius: 8px;
@@ -195,9 +232,10 @@ input[type=submit].default {
     background: var(--bg-light);
     font-weight: 600;
     padding: 10px;
+    color: var(--text-dark) !important;
 }
 
-/* Mesajlar */
+/* Mesajlar - Renkli arkaplan, KOYU yazı */
 .messagelist {
     border-radius: 8px;
     overflow: hidden;
@@ -211,19 +249,19 @@ input[type=submit].default {
 
 .messagelist .success {
     background: #d1fae5 !important;
-    color: #065f46;
+    color: #065f46 !important;
     border-left: 4px solid var(--primary-color);
 }
 
 .messagelist .warning {
     background: #fef3c7 !important;
-    color: #92400e;
+    color: #92400e !important;
     border-left: 4px solid #f59e0b;
 }
 
 .messagelist .error {
     background: #fee2e2 !important;
-    color: #991b1b;
+    color: #991b1b !important;
     border-left: 4px solid #ef4444;
 }
 
@@ -240,27 +278,24 @@ input[type=submit].default {
     padding: 8px 12px;
     border-radius: 6px;
     margin: 0 2px;
+    color: var(--text-dark) !important;
 }
 
 .paginator a:hover {
     background: var(--bg-light);
     text-decoration: none;
+    color: var(--primary-color) !important;
 }
 
 .paginator .this-page {
     background: var(--primary-color);
-    color: white;
+    color: white !important;
     padding: 8px 12px;
     border-radius: 6px;
     font-weight: 600;
 }
 
 /* Fieldsets */
-.aligned label {
-    font-weight: 600;
-    color: var(--text-dark);
-}
-
 fieldset.module {
     border: 1px solid var(--border-color);
     border-radius: 8px;
@@ -271,7 +306,7 @@ fieldset.module {
 /* Help text */
 .help,
 p.help {
-    color: var(--text-light);
+    color: var(--text-light) !important;
     font-size: 13px;
 }
 
@@ -283,7 +318,7 @@ p.help {
     border-radius: 0 0 8px 8px;
 }
 
-/* Object tools */
+/* Object tools - Yeşil arkaplan, BEYAZ yazı */
 .object-tools {
     margin: 0 0 20px;
 }
@@ -298,6 +333,23 @@ p.help {
     color: white !important;
     padding: 10px 16px;
     font-weight: 500;
+}
+
+.object-tools a:hover {
+    color: white !important;
+}
+
+/* Content area - Tüm yazılar koyu renk */
+#content {
+    color: var(--text-dark) !important;
+}
+
+#content p,
+#content div,
+#content span,
+#content td,
+#content th {
+    color: var(--text-dark) !important;
 }
 
 /* Responsive */
