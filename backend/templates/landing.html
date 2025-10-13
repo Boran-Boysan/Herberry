@@ -1,0 +1,249 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herberry - Taze Sebze & Meyve Teslimatı</title>
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <div class="logo-icon">H</div>
+                <span class="logo-text">Herberry</span>
+            </div>
+            <nav class="nav">
+                <a href="#features">Özellikler</a>
+                <a href="#how-it-works">Nasıl Çalışır?</a>
+                <a href="#target">Kimler İçin?</a>
+                <a href="/swagger/" target="_blank">API Docs</a>
+                <a href="/admin/" class="btn-admin">Admin Girişi</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">🥬 En Taze Sebze & Meyveler<br>Kapınızda</h1>
+                <p class="hero-subtitle">Herberry ile sağlıklı yaşamın keyfini çıkarın. Tarladan sofraya, sadece bir tıkla!</p>
+                <div class="hero-buttons">
+                    <a href="/swagger/" class="btn btn-primary">API'yi Keşfet</a>
+                    <a href="/admin/" class="btn btn-secondary">Yönetim Paneli</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="floating-card card-1">🍅 Domates</div>
+                <div class="floating-card card-2">🥒 Salatalık</div>
+                <div class="floating-card card-3">🍎 Elma</div>
+                <div class="floating-card card-4">🥬 Marul</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">🎯 Neden Herberry?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⏱️</div>
+                    <h3>Zaman Tasarrufu</h3>
+                    <p>Market derdini ortadan kaldırır, online sipariş ile eve teslim.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌱</div>
+                    <h3>Her Zaman Taze</h3>
+                    <p>Dalından yeni kopmuş ürün garantisi.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💚</div>
+                    <h3>Sağlıklı Yaşam</h3>
+                    <p>Tavsiye motoru ile sağlıklı alışkanlıklar edinme.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✅</div>
+                    <h3>Organik Sertifika</h3>
+                    <p>Güvenilir, sertifikalı organik ürün seçeneği.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Kişiselleştirilmiş</h3>
+                    <p>Beslenme alışkanlıklarınıza göre akıllı öneriler.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📦</div>
+                    <h3>Abonelik Sistemi</h3>
+                    <p>Haftalık sebze/meyve kutusu ile düzenli teslimat.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">📦 Nasıl Çalışır?</h2>
+            <div class="steps-grid">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Ürün Seçin</h3>
+                    <p>Platformda istediğiniz sebze ve meyveleri sepete ekleyin.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Akıllı Öneri</h3>
+                    <p>Sistem size tamamlayıcı ürünler önerir. Örnek: Salata paketi.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Sipariş Verin</h3>
+                    <p>Tek tıkla siparişinizi tamamlayın, ödeme yapın.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Teslim Alın</h3>
+                    <p>Taze ürünleriniz hızlıca kapınıza gelsin!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Target Audience Section -->
+    <section id="target" class="target">
+        <div class="container">
+            <h2 class="section-title">👥 Kimler İçin?</h2>
+            <div class="target-grid">
+                <div class="target-card">
+                    <div class="target-icon">👨‍👩‍👧‍👦</div>
+                    <h3>Aileler</h3>
+                    <p>Çocuklarına sağlıklı besin sağlamak isteyen ebeveynler.</p>
+                </div>
+                <div class="target-card">
+                    <div class="target-icon">🍽️</div>
+                    <h3>Restoran & Kafeler</h3>
+                    <p>Malzemeyi taze almak isteyen işletmeler için toplu sipariş.</p>
+                </div>
+                <div class="target-card">
+                    <div class="target-icon">🥗</div>
+                    <h3>Vegan/Vejetaryen</h3>
+                    <p>Bitkisel temelli beslenen kullanıcılar.</p>
+                </div>
+                <div class="target-card">
+                    <div class="target-icon">💼</div>
+                    <h3>Yoğun Profesyoneller</h3>
+                    <p>Market alışverişine vakti olmayan çalışanlar.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Recommendations Section -->
+    <section class="ai-section">
+        <div class="container">
+            <h2 class="section-title">🤖 Akıllı Tavsiye Motoru</h2>
+            <div class="ai-tags">
+                <span class="ai-tag">🍅 Tüm ürünler</span>
+                <span class="ai-tag">🌸 Sezonun taze ürünleri</span>
+                <span class="ai-tag">🌴 Tropik meyveler</span>
+                <span class="ai-tag">🍊 Narenciye çeşitleri</span>
+                <span class="ai-tag">🍳 Yemek temelli ürünler</span>
+                <span class="ai-tag">🥗 Vegan/bitkisel seçenekler</span>
+                <span class="ai-tag">💪 Sporcu/protein destekli</span>
+                <span class="ai-tag">⭐ Senin için önerilenler</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Hemen Başlayın!</h2>
+            <p>API dokümantasyonunu inceleyin veya admin paneline giriş yapın.</p>
+            <div class="cta-buttons">
+                <a href="/swagger/" class="btn btn-primary">API Dokümantasyonu</a>
+                <a href="/admin/" class="btn btn-outline">Admin Girişi</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="logo-icon">H</div>
+                    <span class="logo-text">Herberry</span>
+                </div>
+                <p class="footer-text">En taze sebze ve meyveler kapınızda 🥬</p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Herberry. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+
+
+<!-- =====================================================
+     4. templates/admin/base_site.html - MEVCUT DOSYA
+     ===================================================== -->
+
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | Herberry Admin{% endblock %}
+
+{% block branding %}
+<div style="display: flex; align-items: center; gap: 12px; padding: 10px 20px;">
+    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+        <span style="color: white; font-weight: bold; font-size: 20px;">H</span>
+    </div>
+    <div>
+        <h1 style="margin: 0; font-weight: 600; color: white; font-size: 18px;">Herberry</h1>
+        <p style="margin: 0; font-size: 12px; color: rgba(255, 255, 255, 0.9);">Yönetim Paneli</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block userlinks %}
+<div style="display: flex; align-items: center; gap: 15px; padding-right: 20px;">
+    {% if user.is_authenticated %}
+    <a href="/swagger/" style="color: white; text-decoration: none; font-size: 13px; opacity: 0.9;" target="_blank">
+        📊 API Swagger
+    </a>
+    <a href="/redoc/" style="color: white; text-decoration: none; font-size: 13px; opacity: 0.9;" target="_blank">
+        📄 API Docs
+    </a>
+    <span style="color: white; font-size: 14px; opacity: 0.9;">
+        Hoş geldiniz, <strong>{{ user.get_full_name|default:user.email }}</strong>
+    </span>
+    <a href="{% url 'admin:logout' %}"
+       style="background: rgba(255, 255, 255, 0.2); color: white; padding: 6px 16px;
+              border-radius: 6px; text-decoration: none; font-size: 13px;
+              font-weight: 500; transition: all 0.2s; border: 1px solid rgba(255, 255, 255, 0.3);">
+        Çıkış Yap
+    </a>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+<style>
+    @media (max-width: 768px) {
+        #header { padding: 10px !important; }
+        #branding { float: none !important; text-align: center; margin-bottom: 10px; }
+        #user-tools { float: none !important; text-align: center; padding: 10px 0 !important; }
+        #user-tools > div { flex-direction: column; gap: 10px !important; }
+    }
+</style>
+{% endblock %}

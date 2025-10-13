@@ -11,7 +11,7 @@ from rest_framework import permissions
 admin.site.site_header = "🍓 Herberry Yönetim Paneli"
 admin.site.site_title = "Herberry Admin"
 admin.site.index_title = "Yönetim Paneli"
-admin.site.site_url = "/"  # Admin'den ana sayfaya dön
+admin.site.site_url = "/"
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -50,3 +50,4 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
