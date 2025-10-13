@@ -1,341 +1,174 @@
-:root {
-    --primary-color: #10b981;
-    --primary-dark: #059669;
-    --text-dark: #111827;
-    --text-medium: #374151;
-    --text-light: #6b7280;
-    --bg-light: #f9fafb;
-    --border-color: #e5e7eb;
-}
+/* Herberry Admin Panel Custom CSS */
 
-/* Header - BEYAZ YAZILAR */
+/* Header - Yeşil arkaplan, BEYAZ yazılar */
 #header {
     background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-#header a:link,
-#header a:visited,
 #branding h1,
 #branding h1 a:link,
-#branding h1 a:visited,
-#user-tools,
+#branding h1 a:visited {
+    color: #ffffff !important;
+}
+
 #user-tools a:link,
 #user-tools a:visited {
-    color: white !important;
+    color: #ffffff !important;
 }
 
 /* Breadcrumbs */
-div.breadcrumbs {
-    background: var(--bg-light) !important;
-    border-bottom: 1px solid var(--border-color) !important;
-    padding: 12px 20px !important;
+.breadcrumbs {
+    background: #f9fafb !important;
+    color: #111827 !important;
 }
 
-div.breadcrumbs,
-div.breadcrumbs a {
-    color: var(--text-dark) !important;
+.breadcrumbs a {
+    color: #10b981 !important;
 }
 
-div.breadcrumbs a:hover {
-    color: var(--primary-color) !important;
-}
-
-/* Module başlıkları - BEYAZ YAZILAR */
+/* Module başlıkları - Yeşil arkaplan, BEYAZ yazı */
 .module h2,
 .module caption,
 .inline-group h2 {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
-    color: white !important;
-    padding: 12px 16px !important;
-    font-weight: 600 !important;
-    border-radius: 8px 8px 0 0 !important;
-}
-
-.module {
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    overflow: hidden;
-    margin-bottom: 20px;
+    background: #10b981 !important;
+    color: #ffffff !important;
 }
 
 /* Linkler */
 a:link,
 a:visited {
-    color: var(--primary-color) !important;
-    text-decoration: none;
+    color: #10b981 !important;
 }
 
 a:hover {
-    color: var(--primary-dark) !important;
+    color: #059669 !important;
 }
 
-/* BUTONLAR - EN ÖNEMLİSİ - BEYAZ YAZILAR! */
+/* BUTONLAR - EN ÖNEMLİSİ - BEYAZ YAZILI */
 .button,
-input[type=submit],
-input[type=button],
+input[type="submit"],
+input[type="button"],
 .submit-row input,
 button,
 .addlink,
 .changelink,
+a.addlink,
+a.changelink,
 .addlink:link,
 .addlink:visited,
 .changelink:link,
 .changelink:visited {
-    background: var(--primary-color) !important;
-    color: white !important;
+    background-color: #10b981 !important;
+    color: #ffffff !important;
     border: none !important;
-    border-radius: 8px !important;
-    padding: 10px 20px !important;
-    font-weight: 500 !important;
-    transition: all 0.2s ease !important;
-    cursor: pointer;
+    padding: 10px 15px !important;
     text-decoration: none !important;
+    border-radius: 4px !important;
 }
 
 .button:hover,
-input[type=submit]:hover,
-input[type=button]:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
 .addlink:hover,
 .changelink:hover {
-    background: var(--primary-dark) !important;
-    color: white !important;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
-    text-decoration: none !important;
+    background-color: #059669 !important;
+    color: #ffffff !important;
 }
 
-/* Delete button */
+.button:active,
+.button:focus,
+.addlink:active,
+.addlink:focus,
+.changelink:active,
+.changelink:focus {
+    background-color: #059669 !important;
+    color: #ffffff !important;
+}
+
+/* Delete button - Kırmızı, BEYAZ yazı */
 .deletelink,
-.deletelink-box a.deletelink,
 .deletelink:link,
-.deletelink:visited {
-    background: #ef4444 !important;
-    color: white !important;
+.deletelink:visited,
+.deletelink-box a {
+    background-color: #ef4444 !important;
+    color: #ffffff !important;
 }
 
-.deletelink:hover {
-    background: #dc2626 !important;
-    color: white !important;
+.deletelink:hover,
+.deletelink-box a:hover {
+    background-color: #dc2626 !important;
+    color: #ffffff !important;
 }
 
-/* Default button */
-.default,
-input[type=submit].default {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
-    color: white !important;
+/* Object tools - BEYAZ yazı */
+.object-tools a:link,
+.object-tools a:visited {
+    background-color: #10b981 !important;
+    color: #ffffff !important;
 }
 
-/* Tablolar */
-#result_list,
-.results {
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    overflow: hidden;
+.object-tools a:hover {
+    background-color: #059669 !important;
+    color: #ffffff !important;
 }
 
+/* Tablolar - KOYU yazılar */
 #result_list thead th {
-    background: var(--bg-light) !important;
-    color: var(--text-dark) !important;
-    font-weight: 600 !important;
-    border-bottom: 2px solid var(--border-color) !important;
-    padding: 12px !important;
+    background: #f9fafb !important;
+    color: #111827 !important;
 }
 
-#result_list tbody tr {
-    border-bottom: 1px solid #f3f4f6;
+#result_list tbody td,
+#result_list tbody th {
+    color: #111827 !important;
 }
 
-#result_list tbody tr:hover {
-    background: var(--bg-light) !important;
+/* Form alanları - KOYU yazılar */
+.form-row label {
+    color: #111827 !important;
 }
 
-#result_list tbody th,
-#result_list tbody td {
-    padding: 12px !important;
-    color: var(--text-dark) !important;
-}
-
-/* Form alanları */
-.form-row input[type="text"],
-.form-row input[type="password"],
-.form-row input[type="email"],
-.form-row input[type="url"],
-.form-row input[type="number"],
-.form-row input[type="date"],
-.form-row input[type="datetime-local"],
+.form-row input,
 .form-row textarea,
 .form-row select {
-    border: 2px solid var(--border-color) !important;
-    border-radius: 6px !important;
-    padding: 10px 12px !important;
-    transition: all 0.2s ease;
-    color: var(--text-dark) !important;
-}
-
-.form-row input:focus,
-.form-row textarea:focus,
-.form-row select:focus {
-    border-color: var(--primary-color) !important;
-    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
-    outline: none !important;
-}
-
-/* Form labels */
-.form-row label,
-.aligned label {
-    font-weight: 600;
-    color: var(--text-dark) !important;
-}
-
-/* Selector */
-.selector {
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.selector-chosen h2,
-.selector-available h2 {
-    background: var(--primary-color) !important;
-    color: white !important;
-}
-
-/* Dashboard */
-.dashboard .module th {
-    background: var(--bg-light);
-    font-weight: 600;
-    padding: 10px;
-    color: var(--text-dark) !important;
-}
-
-/* Mesajlar */
-.messagelist {
-    border-radius: 8px;
-    overflow: hidden;
-    margin: 0 0 20px;
-}
-
-.messagelist li {
-    padding: 12px 16px;
-    font-weight: 500;
-}
-
-.messagelist .success {
-    background: #d1fae5 !important;
-    color: #065f46 !important;
-    border-left: 4px solid var(--primary-color);
-}
-
-.messagelist .warning {
-    background: #fef3c7 !important;
-    color: #92400e !important;
-    border-left: 4px solid #f59e0b;
-}
-
-.messagelist .error {
-    background: #fee2e2 !important;
-    color: #991b1b !important;
-    border-left: 4px solid #ef4444;
+    color: #111827 !important;
 }
 
 /* Pagination */
-.paginator {
-    padding: 15px 0;
-    text-align: center;
-}
-
 .paginator a:link,
 .paginator a:visited {
-    background: white;
-    border: 1px solid var(--border-color);
-    padding: 8px 12px;
-    border-radius: 6px;
-    margin: 0 2px;
-    color: var(--text-dark) !important;
-}
-
-.paginator a:hover {
-    background: var(--bg-light);
-    text-decoration: none;
-    color: var(--primary-color) !important;
+    color: #111827 !important;
 }
 
 .paginator .this-page {
-    background: var(--primary-color);
-    color: white !important;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-weight: 600;
+    background: #10b981 !important;
+    color: #ffffff !important;
 }
 
 /* Submit row */
 .submit-row {
-    padding: 15px 20px;
-    background: var(--bg-light);
-    border-top: 1px solid var(--border-color);
-    border-radius: 0 0 8px 8px;
+    background: #f9fafb !important;
 }
 
-/* Object tools - BEYAZ YAZILAR */
-.object-tools {
-    margin: 0 0 20px;
+/* Mesajlar */
+.messagelist .success {
+    background-color: #d1fae5 !important;
+    color: #065f46 !important;
 }
 
-.object-tools li {
-    background: var(--primary-color);
-    border-radius: 8px;
+.messagelist .warning {
+    background-color: #fef3c7 !important;
+    color: #92400e !important;
 }
 
-.object-tools a:link,
-.object-tools a:visited {
-    color: white !important;
-    padding: 10px 16px;
-    font-weight: 500;
-    text-decoration: none !important;
+.messagelist .error {
+    background-color: #fee2e2 !important;
+    color: #991b1b !important;
 }
 
-.object-tools a:hover {
-    color: white !important;
-    text-decoration: none !important;
-}
-
-/* Content area - KOYU YAZILAR */
-#content {
-    color: var(--text-dark) !important;
-}
-
+/* Content area - KOYU yazılar */
 #content p,
 #content div,
-#content span,
-#content td,
-#content th,
-#content label {
-    color: var(--text-dark) !important;
-}
-
-/* Help text */
-.help,
-p.help {
-    color: var(--text-light) !important;
-    font-size: 13px;
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-    .colM {
-        margin-left: 0 !important;
-    }
-}
-
-@media (max-width: 768px) {
-    .submit-row {
-        padding: 12px 15px;
-    }
-
-    .object-tools {
-        float: none;
-        margin-left: 0;
-        margin-bottom: 15px;
-    }
+#content span {
+    color: #111827 !important;
 }
