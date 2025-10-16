@@ -44,7 +44,7 @@ urlpatterns = [
     path('api/v1/auth/', include('accounts.urls')),
     path('api/v1/products/', include('products.urls')),
     path('api/v1/orders/', include('orders.urls')),
-    path('api/v1/subscriptions/', include('subscriptions.4urls')),
+    path('api/v1/subscriptions/', include('subscriptions.urls')),
 ]
 
 # Media files için URL pattern
