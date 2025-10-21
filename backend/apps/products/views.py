@@ -1,4 +1,4 @@
-from rest_framework import generics, status, filters
+from rest_framework import generics, status, filters, permissions  # permissions eklendi
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from django_filters.rest_framework import DjangoFilterBackend
@@ -13,11 +13,19 @@ from .serializers import (
 class CategoryListView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [permissions.AllowAny]  # ✅ Public endpoint
+
+    def get_permissions(self):
+        # GET için herkese açık, POST için authentication gerekli
+        if self.request.method == 'GET':
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
 
 
 class ProductListView(generics.ListAPIView):
     queryset = Product.objects.filter(is_active=True)
     serializer_class = ProductListSerializer
+    permission_classes = [permissions.AllowAny]  # ✅ Public endpoint
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['category', 'is_organic']
     search_fields = ['name', 'description']
@@ -25,10 +33,18 @@ class ProductListView(generics.ListAPIView):
     ordering = ['-created_at']
 
 
+class ProductDetailView(generics.RetrieveAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductDetailSerializer
+    permission_classes = [permissions.AllowAny]  # Public endpoint
+    lookup_field = 'slug'
+
+
 class ProductCreateView(generics.CreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductCreateUpdateSerializer
-    parser_classes = (MultiPartParser, FormParser)  # Resim yükleme için gerekli
+    permission_classes = [permissions.IsAuthenticated]  # Sadece giriş yapanlar
+    parser_classes = (MultiPartParser, FormParser)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -39,15 +55,10 @@ class ProductCreateView(generics.CreateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ProductDetailView(generics.RetrieveAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductDetailSerializer
-    lookup_field = 'slug'
-
-
 class ProductUpdateView(generics.UpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductCreateUpdateSerializer
+    permission_classes = [permissions.IsAuthenticated]  # Sadece giriş yapanlar
     parser_classes = (MultiPartParser, FormParser)
     lookup_field = 'slug'
 
@@ -65,6 +76,7 @@ class ProductUpdateView(generics.UpdateAPIView):
 
 class ProductDeleteView(generics.DestroyAPIView):
     queryset = Product.objects.all()
+    permission_classes = [permissions.IsAuthenticated]  # Sadece giriş yapanlar
     lookup_field = 'slug'
 
     def destroy(self, request, *args, **kwargs):
