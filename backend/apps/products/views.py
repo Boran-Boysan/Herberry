@@ -1,87 +1,63 @@
-from rest_framework import generics, status, filters, permissions  # permissions eklendi
-from rest_framework.response import Response
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework import generics, filters
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from django_filters.rest_framework import DjangoFilterBackend
-from django.db import models
-from .models import Category, Product, SKU, Stock
-from .serializers import (
-    CategorySerializer, ProductListSerializer,
-    ProductDetailSerializer, ProductCreateUpdateSerializer
-)
+from .models import Product, Category
+from .serializers import ProductSerializer, CategorySerializer
 
 
-class CategoryListView(generics.ListCreateAPIView):
+class CategoryListView(generics.ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [permissions.AllowAny]  # ✅ Public endpoint
-
-    def get_permissions(self):
-        # GET için herkese açık, POST için authentication gerekli
-        if self.request.method == 'GET':
-            return [permissions.AllowAny()]
-        return [permissions.IsAuthenticated()]
+    permission_classes = [AllowAny]
 
 
 class ProductListView(generics.ListAPIView):
-    queryset = Product.objects.filter(is_active=True)
-    serializer_class = ProductListSerializer
-    permission_classes = [permissions.AllowAny]  # ✅ Public endpoint
+    serializer_class = ProductSerializer
+    permission_classes = [AllowAny]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['category', 'is_organic']
     search_fields = ['name', 'description']
-    ordering_fields = ['name', 'created_at']
+    ordering_fields = ['price_cents', 'created_at']
     ordering = ['-created_at']
+
+    def get_queryset(self):
+        return Product.objects.filter(is_active=True)
+
+
+class DiscountedProductsView(generics.ListAPIView):
+    """Indirimli urunler"""
+    serializer_class = ProductSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        return Product.objects.filter(
+            is_active=True,
+            discount_active=True,
+            discount_percentage__gt=0
+        ).order_by('-discount_percentage')
 
 
 class ProductDetailView(generics.RetrieveAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductDetailSerializer
-    permission_classes = [permissions.AllowAny]  # Public endpoint
+    queryset = Product.objects.filter(is_active=True)
+    serializer_class = ProductSerializer
+    permission_classes = [AllowAny]
     lookup_field = 'slug'
 
 
 class ProductCreateView(generics.CreateAPIView):
     queryset = Product.objects.all()
-    serializer_class = ProductCreateUpdateSerializer
-    permission_classes = [permissions.IsAuthenticated]  # Sadece giriş yapanlar
-    parser_classes = (MultiPartParser, FormParser)
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            product = serializer.save()
-            response_serializer = ProductDetailSerializer(product)
-            return Response(response_serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    serializer_class = ProductSerializer
+    permission_classes = [IsAdminUser]
 
 
 class ProductUpdateView(generics.UpdateAPIView):
     queryset = Product.objects.all()
-    serializer_class = ProductCreateUpdateSerializer
-    permission_classes = [permissions.IsAuthenticated]  # Sadece giriş yapanlar
-    parser_classes = (MultiPartParser, FormParser)
+    serializer_class = ProductSerializer
+    permission_classes = [IsAdminUser]
     lookup_field = 'slug'
-
-    def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-
-        if serializer.is_valid():
-            product = serializer.save()
-            response_serializer = ProductDetailSerializer(product)
-            return Response(response_serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ProductDeleteView(generics.DestroyAPIView):
     queryset = Product.objects.all()
-    permission_classes = [permissions.IsAuthenticated]  # Sadece giriş yapanlar
+    permission_classes = [IsAdminUser]
     lookup_field = 'slug'
-
-    def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
-        # Soft delete (is_active = False)
-        instance.is_active = False
-        instance.save()
-        return Response(status=status.HTTP_204_NO_CONTENT)

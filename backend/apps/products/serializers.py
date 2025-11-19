@@ -1,67 +1,47 @@
 from rest_framework import serializers
-from .models import Category, Product, SKU, Stock
-import os
+from .models import Product, Category
 
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name', 'slug', 'parent', 'created_at']
+        fields = ['id', 'name', 'slug', 'parent']
 
 
-class SKUSerializer(serializers.ModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
+    # Frontend icin hesaplanmis alanlar
     price_tl = serializers.ReadOnlyField()
+    discounted_price_tl = serializers.ReadOnlyField()
+    has_discount = serializers.ReadOnlyField()
+    savings_tl = serializers.ReadOnlyField()
 
-    class Meta:
-        model = SKU
-        fields = ['id', 'unit', 'barcode', 'price_cents', 'price_tl', 'vat_rate', 'is_active']
-
-
-class StockSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Stock
-        fields = ['qty_on_hand']
-
-
-class ProductListSerializer(serializers.ModelSerializer):
-    """Ürün listesi için basit serializer"""
     category_name = serializers.CharField(source='category.name', read_only=True)
-    image_url = serializers.ReadOnlyField()
+    unit_display = serializers.CharField(source='get_unit_display', read_only=True)
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'slug', 'category_name', 'is_organic', 'image_url', 'is_active']
+        fields = [
+            'id', 'name', 'slug', 'description',
+            'category', 'category_name',
+            'price_cents', 'price_tl',
+            'discounted_price_tl',
+            'has_discount',
+            'discount_percentage',
+            'savings_tl',
+            'unit', 'unit_display',
+            'stock', 'is_organic', 'is_active',
+            'image', 'created_at'
+        ]
 
+    def to_representation(self, instance):
+        """Frontend icin ekstra bilgiler"""
+        data = super().to_representation(instance)
+        data['in_stock'] = instance.stock > 0
 
-class ProductDetailSerializer(serializers.ModelSerializer):
-    """Ürün detayı için kapsamlı serializer"""
-    category = CategorySerializer(read_only=True)
-    skus = SKUSerializer(many=True, read_only=True)
-    image_url = serializers.ReadOnlyField()
+        # Indirim varsa ekstra bilgi
+        if instance.has_discount:
+            data['discount_label'] = f"%{int(instance.discount_percentage)} Indirim"
+            data['original_price'] = f"{instance.price_tl:.2f} TL"
+            data['final_price'] = f"{instance.discounted_price_tl:.2f} TL"
 
-    class Meta:
-        model = Product
-        fields = ['id', 'name', 'slug', 'description', 'category', 'tags', 'is_organic',
-                  'image', 'image_url', 'skus', 'is_active', 'created_at', 'updated_at']
-
-
-class ProductCreateUpdateSerializer(serializers.ModelSerializer):
-    """Ürün oluşturma/güncelleme için serializer"""
-
-    class Meta:
-        model = Product
-        fields = ['name', 'description', 'category', 'tags', 'is_organic', 'image', 'is_active']
-
-    def create(self, validated_data):
-        return Product.objects.create(**validated_data)
-
-    def update(self, instance, validated_data):
-        # Eski resmi sil (isteğe bağlı)
-        if 'image' in validated_data and instance.image:
-            if os.path.isfile(instance.image.path):
-                os.remove(instance.image.path)
-
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-        instance.save()
-        return instance
+        return data

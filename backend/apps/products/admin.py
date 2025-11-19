@@ -1,115 +1,111 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Category, Product, SKU, Stock, Cart, CartItem
+from .models import Category, Product
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug', 'parent', 'created_at')
-    list_filter = ('parent', 'created_at')
-    search_fields = ('name', 'slug')
     prepopulated_fields = {'slug': ('name',)}
-    ordering = ('name',)
+    search_fields = ('name',)
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'is_organic', 'is_active', 'created_at')
-    list_filter = ('category', 'is_organic', 'is_active', 'created_at')
+    list_display = (
+        'name',
+        'category',
+        'price_display',
+        'discount_badge',
+        'stock_badge',
+        'is_organic',
+        'is_active'
+    )
+    list_filter = ('category', 'is_organic', 'is_active', 'discount_active')
     search_fields = ('name', 'description')
     prepopulated_fields = {'slug': ('name',)}
-    readonly_fields = ('image_url', 'created_at', 'updated_at')
 
     fieldsets = (
         ('Temel Bilgiler', {
-            'fields': ('name', 'slug', 'description', 'category')
+            'fields': ('name', 'slug', 'description', 'category', 'image')
         }),
-        ('Özellikler', {
-            'fields': ('tags', 'is_organic', 'is_active')
+        ('Fiyat ve Stok', {
+            'fields': ('price_cents', 'unit', 'stock')
         }),
-        ('Resim', {
-            'fields': ('image', 'image_url')
+        ('Indirim', {
+            'fields': ('discount_active', 'discount_percentage'),
+            'description': 'Indirim yapmak icin aktif yapin ve yuzde girin.'
         }),
-        ('Tarihler', {
-            'fields': ('created_at', 'updated_at'),
-            'classes': ('collapse',)
-        })
+        ('Ozellikler', {
+            'fields': ('is_organic', 'is_active')
+        }),
     )
 
+    actions = ['activate_discount', 'deactivate_discount', 'set_discount_10', 'set_discount_20', 'set_discount_50']
 
-class StockInline(admin.StackedInline):
-    model = Stock
-    extra = 0
-    fields = ('qty_on_hand', 'min_stock_level')
+    def price_display(self, obj):
+        if obj.has_discount:
+            return format_html(
+                '<div style="display: flex; flex-direction: column; gap: 2px;">'
+                '<span style="color: #10b981; font-weight: bold; font-size: 14px;">{:.2f} TL</span>'
+                '<del style="color: #999; font-size: 11px;">{:.2f} TL</del>'
+                '</div>',
+                obj.discounted_price_tl,
+                obj.price_tl
+            )
+        return format_html('<span style="font-size: 14px;">{:.2f} TL</span>', obj.price_tl)
 
+    price_display.short_description = "Fiyat"
 
-@admin.register(SKU)
-class SKUAdmin(admin.ModelAdmin):
-    list_display = ('product', 'unit', 'price_tl', 'vat_rate', 'is_active')
-    list_filter = ('unit', 'is_active', 'vat_rate')
-    search_fields = ('product__name', 'barcode')
-    raw_id_fields = ('product',)
-    inlines = [StockInline]
+    def discount_badge(self, obj):
+        if obj.has_discount:
+            savings = obj.savings_tl
+            return format_html(
+                '<span style="background: #10b981; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">'
+                '-%{} ({:.2f} TL)'
+                '</span>',
+                int(obj.discount_percentage),
+                savings
+            )
+        return format_html('<span style="color: #999;">-</span>')
 
-    def price_tl(self, obj):
-        return f"{obj.price_tl:.2f} TL"
+    discount_badge.short_description = "Indirim"
 
-    price_tl.short_description = "Fiyat (TL)"
+    def stock_badge(self, obj):
+        if obj.stock == 0:
+            return format_html('<span style="color: #ef4444; font-weight: bold;">Tukendi</span>')
+        elif obj.stock < 10:
+            return format_html('<span style="color: #f59e0b;">{} adet</span>', obj.stock)
+        return format_html('<span style="color: #10b981;">{} adet</span>', obj.stock)
 
+    stock_badge.short_description = "Stok"
 
-@admin.register(Stock)
-class StockAdmin(admin.ModelAdmin):
-    list_display = ('sku', 'qty_on_hand', 'min_stock_level', 'is_low_stock', 'updated_at')
-    list_filter = ('updated_at',)
-    search_fields = ('sku__product__name',)
-    raw_id_fields = ('sku',)
+    def activate_discount(self, request, queryset):
+        updated = queryset.update(discount_active=True)
+        self.message_user(request, f'{updated} urunun indirimi aktiflesti.')
 
-    def is_low_stock(self, obj):
-        if obj.is_low_stock:
-            return format_html('<span style="color: red;">⚠ Düşük Stok</span>')
-        return format_html('<span style="color: green;">✓ Yeterli</span>')
+    activate_discount.short_description = "Indirimi aktiflestir"
 
-    is_low_stock.short_description = "Stok Durumu"
+    def deactivate_discount(self, request, queryset):
+        updated = queryset.update(discount_active=False)
+        self.message_user(request, f'{updated} urunun indirimi kapatildi.')
 
+    deactivate_discount.short_description = "Indirimi kapat"
 
-class CartItemInline(admin.TabularInline):
-    model = CartItem
-    extra = 0
-    readonly_fields = ('total_price_tl',)
+    def set_discount_10(self, request, queryset):
+        updated = queryset.update(discount_active=True, discount_percentage=10)
+        self.message_user(request, f'{updated} urune %10 indirim uygulandi.')
 
-    def total_price_tl(self, obj):
-        return f"{obj.total_price_tl:.2f} TL"
+    set_discount_10.short_description = "%10 indirim uygula"
 
-    total_price_tl.short_description = "Toplam (TL)"
+    def set_discount_20(self, request, queryset):
+        updated = queryset.update(discount_active=True, discount_percentage=20)
+        self.message_user(request, f'{updated} urune %20 indirim uygulandi.')
 
+    set_discount_20.short_description = "%20 indirim uygula"
 
-@admin.register(Cart)
-class CartAdmin(admin.ModelAdmin):
-    list_display = ('user', 'session_key', 'total_items', 'total_price_tl', 'created_at')
-    list_filter = ('created_at', 'currency')
-    search_fields = ('user__email', 'session_key')
-    readonly_fields = ('total_items', 'total_price_tl')
-    inlines = [CartItemInline]
+    def set_discount_50(self, request, queryset):
+        updated = queryset.update(discount_active=True, discount_percentage=50)
+        self.message_user(request, f'{updated} urune %50 indirim uygulandi.')
 
-    def total_price_tl(self, obj):
-        return f"{obj.total_price_tl:.2f} TL"
-
-    total_price_tl.short_description = "Toplam (TL)"
-
-
-@admin.register(CartItem)
-class CartItemAdmin(admin.ModelAdmin):
-    list_display = ('cart', 'sku', 'qty', 'unit_price_tl', 'total_price_tl')
-    list_filter = ('created_at',)
-    search_fields = ('cart__user__email', 'sku__product__name')
-    raw_id_fields = ('cart', 'sku')
-
-    def unit_price_tl(self, obj):
-        return f"{obj.unit_price_tl:.2f} TL"
-
-    unit_price_tl.short_description = "Birim Fiyat (TL)"
-
-    def total_price_tl(self, obj):
-        return f"{obj.total_price_tl:.2f} TL"
-
-    total_price_tl.short_description = "Toplam (TL)"
+    set_discount_50.short_description = "%50 indirim uygula"

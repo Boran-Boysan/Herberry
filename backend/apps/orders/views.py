@@ -1,25 +1,24 @@
-from rest_framework import generics, status, permissions
+from rest_framework import generics, status
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from .models import Order, OrderItem
 from .serializers import OrderSerializer, OrderCreateSerializer
-from products.models import Cart, CartItem
-from accounts.models import Address
+from apps.cart.models import Cart
+from apps.accounts.models import Address
 
 
 class OrderListView(generics.ListAPIView):
-    """Kullanıcının siparişleri"""
     serializer_class = OrderSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Order.objects.filter(user=self.request.user).order_by('-created_at')
+        return Order.objects.filter(user=self.request.user)
 
 
 class OrderDetailView(generics.RetrieveAPIView):
-    """Sipariş detayı"""
     serializer_class = OrderSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     lookup_field = 'id'
 
     def get_queryset(self):
@@ -27,60 +26,51 @@ class OrderDetailView(generics.RetrieveAPIView):
 
 
 class OrderCreateView(generics.CreateAPIView):
-    """Sepetten sipariş oluştur"""
     serializer_class = OrderCreateSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         address_id = serializer.validated_data['address_id']
-        payment_provider = serializer.validated_data.get('payment_provider', 'cod')
+        payment_provider = serializer.validated_data['payment_provider']
 
-        # Adresin kullanıcıya ait olduğunu kontrol et
-        try:
-            address = Address.objects.get(id=address_id, user=request.user)
-        except Address.DoesNotExist:
-            return Response({'error': 'Geçersiz adres'}, status=status.HTTP_400_BAD_REQUEST)
+        address = get_object_or_404(Address, id=address_id, user=request.user)
 
-        # Sepeti kontrol et
         try:
             cart = Cart.objects.get(user=request.user)
             if not cart.items.exists():
-                return Response({'error': 'Sepet boş'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'error': 'Sepet bos'}, status=status.HTTP_400_BAD_REQUEST)
         except Cart.DoesNotExist:
-            return Response({'error': 'Sepet bulunamadı'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Sepet bulunamadi'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Sipariş oluştur
-        subtotal_cents = sum(item.total_price_cents for item in cart.items.all())
-        shipping_cents = 0  # Ücretsiz kargo
-        vat_cents = int(subtotal_cents * 0.18)  # %18 KDV
-        total_cents = subtotal_cents + shipping_cents + vat_cents
+        subtotal = cart.total_cents
+        shipping = 0
+        vat = int(subtotal * 0.18)
+        total = subtotal + shipping + vat
 
         order = Order.objects.create(
             user=request.user,
             address=address,
-            subtotal_cents=subtotal_cents,
-            shipping_cents=shipping_cents,
-            vat_cents=vat_cents,
-            total_cents=total_cents,
+            subtotal_cents=subtotal,
+            shipping_cents=shipping,
+            vat_cents=vat,
+            total_cents=total,
             payment_provider=payment_provider
         )
 
-        # Sipariş ürünlerini oluştur
         for cart_item in cart.items.all():
             OrderItem.objects.create(
                 order=order,
-                sku=cart_item.sku,
-                name_snapshot=cart_item.sku.product.name,
-                unit=cart_item.sku.unit,
-                unit_price_cents=cart_item.unit_price_cents,
-                qty=cart_item.qty,
-                line_total_cents=cart_item.total_price_cents
+                product=cart_item.product,
+                name_snapshot=cart_item.product.name,
+                unit=cart_item.product.unit,
+                unit_price_cents=cart_item.price_snapshot_cents,
+                quantity=cart_item.quantity,
+                line_total_cents=cart_item.line_total_cents
             )
 
-        # Sepeti temizle
         cart.clear()
 
         return Response(OrderSerializer(order).data, status=status.HTTP_201_CREATED)

@@ -4,13 +4,16 @@ from . import views
 app_name = 'products'
 
 urlpatterns = [
-    # Category endpoints
+    # Kategoriler
     path('categories/', views.CategoryListView.as_view(), name='category-list'),
 
-    # Product endpoints
+    # Urunler
     path('', views.ProductListView.as_view(), name='product-list'),
-    path('create/', views.ProductCreateView.as_view(), name='product-create'),
+    path('discounted/', views.DiscountedProductsView.as_view(), name='discounted-products'),
     path('<slug:slug>/', views.ProductDetailView.as_view(), name='product-detail'),
-    path('<slug:slug>/update/', views.ProductUpdateView.as_view(), name='product-update'),
-    path('<slug:slug>/delete/', views.ProductDeleteView.as_view(), name='product-delete'),
+
+    # Admin
+    path('admin/create/', views.ProductCreateView.as_view(), name='product-create'),
+    path('admin/<slug:slug>/update/', views.ProductUpdateView.as_view(), name='product-update'),
+    path('admin/<slug:slug>/delete/', views.ProductDeleteView.as_view(), name='product-delete'),
 ]
