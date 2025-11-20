@@ -1,90 +1,33 @@
-from rest_framework import generics, status
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from django.shortcuts import get_object_or_404
+from rest_framework import serializers
 from .models import Cart, CartItem
-from .serializers import CartSerializer, AddToCartSerializer, UpdateCartItemSerializer
-from apps.products.models import Product
+from apps.products.serializers import ProductSerializer
 
 
-class CartView(generics.RetrieveAPIView):
-    """Sepeti goruntule"""
-    serializer_class = CartSerializer
-    permission_classes = [IsAuthenticated]
+class CartItemSerializer(serializers.ModelSerializer):
+    product_detail = ProductSerializer(source='product', read_only=True)
+    line_total_tl = serializers.ReadOnlyField()
+    unit_price_tl = serializers.ReadOnlyField()
 
-    def get_object(self):
-        cart, _ = Cart.objects.get_or_create(user=self.request.user)
-        return cart
-
-
-class AddToCartView(APIView):
-    """Sepete urun ekle"""
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request):
-        serializer = AddToCartSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        product_id = serializer.validated_data['product_id']
-        quantity = serializer.validated_data['quantity']
-
-        product = get_object_or_404(Product, id=product_id, is_active=True)
-
-        if product.stock < quantity:
-            return Response({'error': 'Yetersiz stok'}, status=status.HTTP_400_BAD_REQUEST)
-
-        cart, _ = Cart.objects.get_or_create(user=request.user)
-
-        cart_item, created = CartItem.objects.get_or_create(
-            cart=cart,
-            product=product,
-            defaults={'quantity': quantity}
-        )
-
-        if not created:
-            cart_item.quantity += quantity
-            cart_item.save()
-
-        return Response(CartSerializer(cart).data, status=status.HTTP_200_OK)
+    class Meta:
+        model = CartItem
+        fields = ['id', 'product', 'product_detail', 'quantity',
+                  'unit_price_tl', 'line_total_tl', 'created_at']
 
 
-class UpdateCartItemView(APIView):
-    """Sepet urun miktarini guncelle"""
-    permission_classes = [IsAuthenticated]
+class CartSerializer(serializers.ModelSerializer):
+    items = CartItemSerializer(many=True, read_only=True)
+    total_items = serializers.ReadOnlyField()
+    total_tl = serializers.ReadOnlyField()
 
-    def patch(self, request, item_id):
-        serializer = UpdateCartItemSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        cart_item = get_object_or_404(CartItem, id=item_id, cart__user=request.user)
-        quantity = serializer.validated_data['quantity']
-
-        if cart_item.product.stock < quantity:
-            return Response({'error': 'Yetersiz stok'}, status=status.HTTP_400_BAD_REQUEST)
-
-        cart_item.quantity = quantity
-        cart_item.save()
-
-        return Response(CartSerializer(cart_item.cart).data)
+    class Meta:
+        model = Cart
+        fields = ['id', 'total_items', 'total_tl', 'items', 'created_at', 'updated_at']
 
 
-class RemoveFromCartView(APIView):
-    """Sepetten urun cikar"""
-    permission_classes = [IsAuthenticated]
-
-    def delete(self, request, item_id):
-        cart_item = get_object_or_404(CartItem, id=item_id, cart__user=request.user)
-        cart = cart_item.cart
-        cart_item.delete()
-        return Response(CartSerializer(cart).data)
+class AddToCartSerializer(serializers.Serializer):
+    product_id = serializers.IntegerField()
+    quantity = serializers.IntegerField(min_value=1, default=1)
 
 
-class ClearCartView(APIView):
-    """Sepeti temizle"""
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request):
-        cart = get_object_or_404(Cart, user=request.user)
-        cart.clear()
-        return Response({'message': 'Sepet temizlendi'}, status=status.HTTP_200_OK)
+class UpdateCartItemSerializer(serializers.Serializer):
+    quantity = serializers.IntegerField(min_value=1)
