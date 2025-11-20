@@ -1,30 +1,12 @@
-from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import User, Address
+from django.urls import path
+from . import views
 
+app_name = 'accounts'
 
-@admin.register(User)
-class UserAdmin(BaseUserAdmin):
-    list_display = ('email', 'username', 'phone', 'is_staff', 'created_at')
-    list_filter = ('is_staff', 'is_superuser', 'is_active')
-    search_fields = ('email', 'username')
-    ordering = ('-created_at',)
-
-    fieldsets = (
-        (None, {'fields': ('email', 'password')}),
-        ('Bilgiler', {'fields': ('username', 'phone')}),
-        ('Izinler', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
-    )
-
-
-@admin.register(Address)
-class AddressAdmin(admin.ModelAdmin):
-    list_display = ('title', 'user', 'city', 'district', 'is_default', 'created_at')
-    list_filter = ('city', 'is_default')
-    search_fields = ('user__email', 'city', 'district', 'title')
-
-    fieldsets = (
-        ('Adres Bilgileri', {
-            'fields': ('user', 'title', 'full_address', 'city', 'district', 'phone', 'is_default')
-        }),
-    )
+urlpatterns = [
+    path('register/', views.RegisterView.as_view(), name='register'),
+    path('login/', views.LoginView.as_view(), name='login'),
+    path('profile/', views.ProfileView.as_view(), name='profile'),
+    path('addresses/', views.AddressListCreateView.as_view(), name='address-list'),
+    path('addresses/<int:pk>/', views.AddressDetailView.as_view(), name='address-detail'),
+]
