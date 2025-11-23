@@ -82,30 +82,30 @@ class ProductAdmin(admin.ModelAdmin):
 
     def activate_discount(self, request, queryset):
         updated = queryset.update(discount_active=True)
-        self.message_user(request, f'{updated} urunun indirimi aktiflesti.')
+        self.message_user(request, '{} urunun indirimi aktiflesti.'.format(updated))
 
-    activate_discount.short_description = "Indirimi aktiflestir"
+    activate_discount.short_description = "Indirimi_aktiflestir"
 
     def deactivate_discount(self, request, queryset):
         updated = queryset.update(discount_active=False)
-        self.message_user(request, f'{updated} urunun indirimi kapatildi.')
+        self.message_user(request, '{} urunun indirimi kapatildi.'.format(updated))
 
-    deactivate_discount.short_description = "Indirimi kapat"
+    deactivate_discount.short_description = "Indirimi_kapat"
 
     def set_discount_10(self, request, queryset):
         updated = queryset.update(discount_active=True, discount_percentage=10)
-        self.message_user(request, f'{updated} urune 10 pct indirim uygulandi.')
+        self.message_user(request, '{} urune 10 indirim uygulandi.'.format(updated))
 
-    set_discount_10.short_description = "10 pct indirim uygula"
+    set_discount_10.short_description = "Indirim_10"
 
     def set_discount_20(self, request, queryset):
         updated = queryset.update(discount_active=True, discount_percentage=20)
-        self.message_user(request, f'{updated} urune 20 pct indirim uygulandi.')
+        self.message_user(request, '{} urune 20 indirim uygulandi.'.format(updated))
 
-    set_discount_20.short_description = "20 pct indirim uygula"
+    set_discount_20.short_description = "Indirim_20"
 
     def set_discount_50(self, request, queryset):
         updated = queryset.update(discount_active=True, discount_percentage=50)
-        self.message_user(request, f'{updated} urune 50 pct indirim uygulandi.')
+        self.message_user(request, '{} urune 50 indirim uygulandi.'.format(updated))
 
-    set_discount_50.short_description = "50 pct indirim uygula"
+    set_discount_50.short_description = "Indirim_50"
