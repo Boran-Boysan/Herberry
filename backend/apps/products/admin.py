@@ -60,9 +60,10 @@ class ProductAdmin(admin.ModelAdmin):
     def discount_badge(self, obj):
         if obj.has_discount:
             savings = obj.savings_tl
+            # %% kullanarak % karakterini escape et
             return format_html(
                 '<span style="background: #10b981; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">'
-                '-%{} ({:.2f} TL)'
+                '-%%{} ({:.2f} TL)'
                 '</span>',
                 int(obj.discount_percentage),
                 savings
@@ -94,18 +95,19 @@ class ProductAdmin(admin.ModelAdmin):
 
     def set_discount_10(self, request, queryset):
         updated = queryset.update(discount_active=True, discount_percentage=10)
-        self.message_user(request, f'{updated} urune %10 indirim uygulandi.')
+        # %% kullanarak % karakterini escape et
+        self.message_user(request, f'{updated} urune %%10 indirim uygulandi.')
 
-    set_discount_10.short_description = "%10 indirim uygula"
+    set_discount_10.short_description = "%%10 indirim uygula"
 
     def set_discount_20(self, request, queryset):
         updated = queryset.update(discount_active=True, discount_percentage=20)
-        self.message_user(request, f'{updated} urune %20 indirim uygulandi.')
+        self.message_user(request, f'{updated} urune %%20 indirim uygulandi.')
 
-    set_discount_20.short_description = "%20 indirim uygula"
+    set_discount_20.short_description = "%%20 indirim uygula"
 
     def set_discount_50(self, request, queryset):
         updated = queryset.update(discount_active=True, discount_percentage=50)
-        self.message_user(request, f'{updated} urune %50 indirim uygulandi.')
+        self.message_user(request, f'{updated} urune %%50 indirim uygulandi.')
 
-    set_discount_50.short_description = "%50 indirim uygula"
+    set_discount_50.short_description = "%%50 indirim uygula"

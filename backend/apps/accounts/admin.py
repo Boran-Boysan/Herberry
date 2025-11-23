@@ -79,6 +79,13 @@ class UserAdmin(BaseUserAdmin):
         'delete_selected_users'
     ]
 
+    # Django'nun default delete_selected'ını kaldır
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
     # Kullanıcı eklerken gösterilecek alanlar
     add_fieldsets = (
         (None, {
@@ -204,6 +211,13 @@ class AddressAdmin(admin.ModelAdmin):
 
     # Toplu işlemler
     actions = ['set_as_default', 'remove_default', 'delete_selected_addresses']
+
+    # Django'nun default delete_selected'ını kaldır
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
 
     fieldsets = (
         ('Kullanıcı', {
