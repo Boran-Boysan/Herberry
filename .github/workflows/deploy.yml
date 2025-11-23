@@ -3,6 +3,7 @@ name: Deploy to AWS Lightsail
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -21,28 +22,38 @@ jobs:
         script: |
           cd /home/ubuntu/Herberry/backend
           
-          echo "🔄 Backing up local changes..."
-          git stash
+          echo "🔄 Backing up .env..."
+          cp .env .env.backup 2>/dev/null || true
           
-          echo "🧹 Cleaning untracked files..."
-          git clean -fd
+          echo "🔄 Fetching latest code..."
+          git fetch --all
           
-          echo "📥 Pulling latest code..."
-          git pull origin main
+          echo "🔄 Resetting to origin/main..."
+          git reset --hard origin/main
           
-          echo "🐍 Activating virtual environment..."
+          echo "🔄 Restoring .env..."
+          cp .env.backup .env 2>/dev/null || true
+          
+          echo "🔧 Fixing migration imports..."
+          find apps/*/migrations -name "*.py" -type f ! -name "__init__.py" -exec sed -i 's/import products\.models/from apps.products import models/g' {} \; 2>/dev/null || true
+          find apps/*/migrations -name "*.py" -type f ! -name "__init__.py" -exec sed -i 's/import cart\.models/from apps.cart import models/g' {} \; 2>/dev/null || true
+          find apps/*/migrations -name "*.py" -type f ! -name "__init__.py" -exec sed -i 's/import orders\.models/from apps.orders import models/g' {} \; 2>/dev/null || true
+          find apps/*/migrations -name "*.py" -type f ! -name "__init__.py" -exec sed -i 's/import subscriptions\.models/from apps.subscriptions import models/g' {} \; 2>/dev/null || true
+          find apps/*/migrations -name "*.py" -type f ! -name "__init__.py" -exec sed -i 's/import accounts\.models/from apps.accounts import models/g' {} \; 2>/dev/null || true
+          
+          echo "🐍 Activating venv..."
           source venv/bin/activate
           
           echo "📦 Installing requirements..."
-          pip install -r requirements.txt
+          pip install -r requirements.txt --quiet
           
-          echo "🗄️  Running migrations..."
-          python manage.py migrate
+          echo "🗄️ Running migrations..."
+          python manage.py migrate --noinput
           
-          echo "📁 Collecting static files..."
-          python manage.py collectstatic --noinput
+          echo "📁 Collecting static..."
+          python manage.py collectstatic --noinput --clear
           
           echo "🔄 Restarting Gunicorn..."
           sudo systemctl restart gunicorn
           
-          echo "✅ Deployment successful!"
+          echo "✅ Done!"
