@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 from .models import Category, Product
 
 
@@ -45,42 +46,35 @@ class ProductAdmin(admin.ModelAdmin):
 
     def price_display(self, obj):
         if obj.has_discount:
-            discounted = float(obj.discounted_price_tl)
-            original = float(obj.price_tl)
-            return format_html(
-                '<div style="display: flex; flex-direction: column; gap: 2px;">'
-                '<span style="color: #10b981; font-weight: bold; font-size: 14px;">{} TL</span>'
-                '<del style="color: #999; font-size: 11px;">{} TL</del>'
-                '</div>',
-                round(discounted, 2),
-                round(original, 2)
-            )
-        price = float(obj.price_tl)
-        return format_html('<span style="font-size: 14px;">{} TL</span>', round(price, 2))
+            discounted = obj.discounted_price_tl
+            original = obj.price_tl
+            html = '<div style="display: flex; flex-direction: column; gap: 2px;">'
+            html += '<span style="color: #10b981; font-weight: bold; font-size: 14px;">{} TL</span>'.format(discounted)
+            html += '<del style="color: #999; font-size: 11px;">{} TL</del>'.format(original)
+            html += '</div>'
+            return mark_safe(html)
+        return mark_safe('<span style="font-size: 14px;">{} TL</span>'.format(obj.price_tl))
 
     price_display.short_description = "Fiyat"
 
     def discount_badge(self, obj):
         if obj.has_discount:
-            savings = float(obj.savings_tl)
+            savings = obj.savings_tl
             discount_pct = int(obj.discount_percentage)
-            return format_html(
-                '<span style="background: #10b981; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">'
-                '-{} ({} TL)'
-                '</span>',
-                discount_pct,
-                round(savings, 2)
-            )
-        return format_html('<span style="color: #999;">-</span>')
+            html = '<span style="background: #10b981; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">'
+            html += '-{} ({} TL)'.format(discount_pct, savings)
+            html += '</span>'
+            return mark_safe(html)
+        return mark_safe('<span style="color: #999;">-</span>')
 
     discount_badge.short_description = "Indirim"
 
     def stock_badge(self, obj):
         if obj.stock == 0:
-            return format_html('<span style="color: #ef4444; font-weight: bold;">Tukendi</span>')
+            return mark_safe('<span style="color: #ef4444; font-weight: bold;">Tukendi</span>')
         elif obj.stock < 10:
-            return format_html('<span style="color: #f59e0b;">{} adet</span>', obj.stock)
-        return format_html('<span style="color: #10b981;">{} adet</span>', obj.stock)
+            return mark_safe('<span style="color: #f59e0b;">{} adet</span>'.format(obj.stock))
+        return mark_safe('<span style="color: #10b981;">{} adet</span>'.format(obj.stock))
 
     stock_badge.short_description = "Stok"
 
