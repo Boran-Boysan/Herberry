@@ -3,13 +3,19 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema
 from .models import Cart, CartItem
 from .serializers import CartSerializer, AddToCartSerializer, UpdateCartItemSerializer
 from apps.products.models import Product
 
 
+@extend_schema(tags=['🛍️ Shopping Cart'])
 class CartView(generics.RetrieveAPIView):
-    """Sepeti goruntule"""
+    """
+    Sepeti Görüntüle
+
+    Kullanıcının sepetini ve içindeki ürünleri gösterir.
+    """
     serializer_class = CartSerializer
     permission_classes = [IsAuthenticated]
 
@@ -18,8 +24,13 @@ class CartView(generics.RetrieveAPIView):
         return cart
 
 
+@extend_schema(tags=['🛍️ Shopping Cart'])
 class AddToCartView(APIView):
-    """Sepete urun ekle"""
+    """
+    Sepete Ürün Ekle
+
+    Sepete yeni ürün ekler veya mevcut ürünün miktarını artırır.
+    """
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -49,8 +60,13 @@ class AddToCartView(APIView):
         return Response(CartSerializer(cart).data, status=status.HTTP_200_OK)
 
 
+@extend_schema(tags=['🛍️ Shopping Cart'])
 class UpdateCartItemView(APIView):
-    """Sepet urun miktarini guncelle"""
+    """
+    Sepet Ürün Miktarını Güncelle
+
+    Sepetteki bir ürünün miktarını günceller.
+    """
     permission_classes = [IsAuthenticated]
 
     def patch(self, request, item_id):
@@ -69,8 +85,13 @@ class UpdateCartItemView(APIView):
         return Response(CartSerializer(cart_item.cart).data)
 
 
+@extend_schema(tags=['🛍️ Shopping Cart'])
 class RemoveFromCartView(APIView):
-    """Sepetten urun cikar"""
+    """
+    Sepetten Ürün Çıkar
+
+    Sepetten belirli bir ürünü tamamen kaldırır.
+    """
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, item_id):
@@ -80,8 +101,13 @@ class RemoveFromCartView(APIView):
         return Response(CartSerializer(cart).data)
 
 
+@extend_schema(tags=['🛍️ Shopping Cart'])
 class ClearCartView(APIView):
-    """Sepeti temizle"""
+    """
+    Sepeti Temizle
+
+    Sepetteki tüm ürünleri siler.
+    """
     permission_classes = [IsAuthenticated]
 
     def post(self, request):

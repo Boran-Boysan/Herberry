@@ -1,14 +1,33 @@
+# Django Core
 Django==4.2.7
+django-filter==23.3
 djangorestframework==3.14.0
-django-cors-headers==4.3.1
-django-filter==23.5
-python-decouple==3.8
-Pillow==10.1.0
-whitenoise==6.6.0
 
 # Database
 mysqlclient==2.2.0
 dj-database-url==2.1.0
 
-# Production
+# Authentication
+djangorestframework-simplejwt==5.3.0
+
+# Security & CORS
+django-cors-headers==4.3.0
+
+# Environment
+python-decouple==3.8
+
+# Static Files
+whitenoise==6.6.0
+
+# API Documentation
+drf-spectacular==0.27.0
+
+# Production Server
 gunicorn==21.2.0
+
+# Image Processing (optional)
+Pillow==10.1.0
+
+# Caching (Production için Redis önerilir)
+# django-redis==5.4.0
+# redis==5.0.1

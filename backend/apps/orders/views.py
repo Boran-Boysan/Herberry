@@ -2,13 +2,20 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema
 from .models import Order, OrderItem
 from .serializers import OrderSerializer, OrderCreateSerializer
 from apps.cart.models import Cart
 from apps.accounts.models import Address
 
 
+@extend_schema(tags=['📦 Orders'])
 class OrderListView(generics.ListAPIView):
+    """
+    Sipariş Listesi
+
+    Kullanıcının tüm siparişlerini en yeniden eskiye doğru listeler.
+    """
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
 
@@ -16,7 +23,13 @@ class OrderListView(generics.ListAPIView):
         return Order.objects.filter(user=self.request.user)
 
 
+@extend_schema(tags=['📦 Orders'])
 class OrderDetailView(generics.RetrieveAPIView):
+    """
+    Sipariş Detayı
+
+    Belirli bir siparişin detay bilgilerini ve içindeki ürünleri gösterir.
+    """
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
     lookup_field = 'id'
@@ -25,7 +38,18 @@ class OrderDetailView(generics.RetrieveAPIView):
         return Order.objects.filter(user=self.request.user)
 
 
+@extend_schema(tags=['📦 Orders'])
 class OrderCreateView(generics.CreateAPIView):
+    """
+    Sipariş Oluştur
+
+    Sepetteki ürünlerden yeni sipariş oluşturur ve sepeti temizler.
+
+    **Ödeme Yöntemleri:**
+    - `cod`: Kapıda Ödeme
+    - `credit_card`: Kredi Kartı
+    - `bank_transfer`: Banka Havalesi
+    """
     serializer_class = OrderCreateSerializer
     permission_classes = [IsAuthenticated]
 
@@ -41,9 +65,9 @@ class OrderCreateView(generics.CreateAPIView):
         try:
             cart = Cart.objects.get(user=request.user)
             if not cart.items.exists():
-                return Response({'error': 'Sepet bos'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'error': 'Sepet boş'}, status=status.HTTP_400_BAD_REQUEST)
         except Cart.DoesNotExist:
-            return Response({'error': 'Sepet bulunamadi'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Sepet bulunamadı'}, status=status.HTTP_400_BAD_REQUEST)
 
         subtotal = cart.total_cents
         shipping = 0
