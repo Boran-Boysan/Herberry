@@ -45,27 +45,31 @@ class ProductAdmin(admin.ModelAdmin):
 
     def price_display(self, obj):
         if obj.has_discount:
+            discounted = float(obj.discounted_price_tl)
+            original = float(obj.price_tl)
             return format_html(
                 '<div style="display: flex; flex-direction: column; gap: 2px;">'
-                '<span style="color: #10b981; font-weight: bold; font-size: 14px;">{:.2f} TL</span>'
-                '<del style="color: #999; font-size: 11px;">{:.2f} TL</del>'
+                '<span style="color: #10b981; font-weight: bold; font-size: 14px;">{} TL</span>'
+                '<del style="color: #999; font-size: 11px;">{} TL</del>'
                 '</div>',
-                obj.discounted_price_tl,
-                obj.price_tl
+                round(discounted, 2),
+                round(original, 2)
             )
-        return format_html('<span style="font-size: 14px;">{:.2f} TL</span>', obj.price_tl)
+        price = float(obj.price_tl)
+        return format_html('<span style="font-size: 14px;">{} TL</span>', round(price, 2))
 
     price_display.short_description = "Fiyat"
 
     def discount_badge(self, obj):
         if obj.has_discount:
-            savings = obj.savings_tl
+            savings = float(obj.savings_tl)
+            discount_pct = int(obj.discount_percentage)
             return format_html(
                 '<span style="background: #10b981; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">'
-                '-{} ({:.2f} TL)'
+                '-{} ({} TL)'
                 '</span>',
-                int(obj.discount_percentage),
-                savings
+                discount_pct,
+                round(savings, 2)
             )
         return format_html('<span style="color: #999;">-</span>')
 
